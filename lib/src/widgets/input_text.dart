@@ -6,14 +6,14 @@ class InputText extends StatelessWidget {
   final String label;
   final bool borderEnabled;
   final double fontSize;
-  const InputText(
-      {Key? key,
-      this.label = '',
-      this.keyboardType = TextInputType.text,
-      this.obscureText = false,
-      this.borderEnabled = true,
-      required this.fontSize})
-      : super(key: key);
+  const InputText({
+    Key? key,
+    this.label = '',
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
+    this.borderEnabled = true,
+    required this.fontSize,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

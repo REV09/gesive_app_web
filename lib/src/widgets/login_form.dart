@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/pages/page_register.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
 
@@ -8,7 +9,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  String labelInputEmail = "Direccion de correo";
+  String labelInputEmail = "Telefono o correo electronico";
   String labelInputPassword = "Contraseña";
 
   @override
@@ -104,7 +105,10 @@ class _LoginFormState extends State<LoginForm> {
                   width: responsive.wp(4),
                 ),
                 TextButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                          Navigator.pushNamed(
+                              context, RegisterClientPage.routeName)
+                        },
                     child: Text(
                       "Registrate gratis",
                       style: registerButton,
