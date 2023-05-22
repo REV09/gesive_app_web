@@ -6,6 +6,8 @@ class InputText extends StatelessWidget {
   final String label;
   final bool borderEnabled;
   final double fontSize;
+  final void Function(String)? onChanged;
+  final String? Function(String?)? validator;
   const InputText({
     Key? key,
     this.label = '',
@@ -13,6 +15,8 @@ class InputText extends StatelessWidget {
     this.obscureText = false,
     this.borderEnabled = true,
     required this.fontSize,
+    this.onChanged,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -32,6 +36,8 @@ class InputText extends StatelessWidget {
     return TextFormField(
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onChanged: onChanged,
+      validator: validator,
       decoration: emailAdressDecoration,
       style: textFieldStyleFont,
     );

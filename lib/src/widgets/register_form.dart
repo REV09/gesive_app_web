@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/classes/conductor_clase.dart';
+import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
+import 'package:gesive_web_app/src/utils/dialogs.dart';
+import 'package:gesive_web_app/src/utils/reg_exp.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
 
@@ -8,6 +12,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  GlobalKey<FormState> _formKey = GlobalKey();
+  final ServiceRestConductor _serviceRestConductor = ServiceRestConductor();
   String labelInputFullName = "Nombre completo";
   String labelInputLicenseNumber = "Numero de licencia";
   String labelInputBornDate = "Fecha de nacimiento";
@@ -16,6 +22,32 @@ class _RegisterFormState extends State<RegisterForm> {
   String labelInputConfirmPassword = "Confirmar Contraseña";
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
+  String? _nombreCompleto;
+  String? _numeroLicencia;
+  DateTime? _fechaNacimiento;
+  String? _numeroTelefono;
+  String? _contrasena;
+  String? _confirmarContrasena;
+
+  _registrarConductor() async {
+    final isOk = _formKey.currentState?.validate();
+    if (isOk != null) {
+      if (isOk) {
+        ProgressDialog.show(context);
+        Conductor conductor = Conductor(
+            nombreCompleto: _nombreCompleto!,
+            numLicencia: _numeroLicencia!,
+            fechaNacimiento: _fechaNacimiento!,
+            telefono: _numeroTelefono!,
+            contrasena: _contrasena!);
+        conductor.setIdConductor(1);
+        int statusResponse =
+            await _serviceRestConductor.registrarConductor(conductor);
+        ProgressDialog.dismiss(context);
+        Navigator.of(context).pop();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,118 +80,183 @@ class _RegisterFormState extends State<RegisterForm> {
           maxWidth: responsive.wp(65),
           minWidth: responsive.wp(50),
         ),
-        child: Column(
-          children: <Widget>[
-            InputText(
-              keyboardType: TextInputType.name,
-              label: labelInputFullName,
-              fontSize: responsive.hp(2.5),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            InputText(
-              keyboardType: TextInputType.text,
-              label: labelInputLicenseNumber,
-              fontSize: responsive.hp(2.5),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            InputText(
-              keyboardType: TextInputType.datetime,
-              label: labelInputBornDate,
-              fontSize: responsive.hp(2.5),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            InputText(
-              keyboardType: TextInputType.number,
-              label: labelInputPhoneNumber,
-              fontSize: responsive.hp(2.5),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            Container(
-              decoration: decorationPassword,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: InputText(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              InputText(
+                keyboardType: TextInputType.name,
+                label: labelInputFullName,
+                fontSize: responsive.hp(2.5),
+                onChanged: (text) {
+                  _nombreCompleto = text;
+                },
+                validator: (text) {
+                  if (!alfabeticCharacters.hasMatch(text!)) {
+                    return "Nombre no valido"
+                        "\nIngrese solo letras y espacios";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              InputText(
+                keyboardType: TextInputType.text,
+                label: labelInputLicenseNumber,
+                fontSize: responsive.hp(2.5),
+                onChanged: (text) {
+                  _numeroLicencia = text;
+                },
+                validator: (text) {
+                  if (!alfanumericExpression.hasMatch(text!)) {
+                    return "Numero de licencia no valido"
+                        "\nIngrese solo letras y numeros";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              InputText(
+                keyboardType: TextInputType.datetime,
+                label: labelInputBornDate,
+                fontSize: responsive.hp(2.5),
+                onChanged: (text) {
+                  _fechaNacimiento = DateTime.tryParse(text);
+                },
+                validator: (text) {
+                  if (!dateValidator.hasMatch(text!)) {
+                    return "Formato de fecha no valido"
+                        "\nIngrese la fecha en formato YYYY-MM-DD";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              InputText(
+                keyboardType: TextInputType.number,
+                label: labelInputPhoneNumber,
+                fontSize: responsive.hp(2.5),
+                onChanged: (text) {
+                  _numeroTelefono = text;
+                },
+                validator: (text) {
+                  if (!numberValidator.hasMatch(text!)) {
+                    return "Numero de telefono no valido"
+                        "\nPorfavor ingrese solo numeros";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              Container(
+                decoration: decorationPassword,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: InputText(
                         label: labelInputPassword,
                         obscureText: obscurePassword,
                         borderEnabled: false,
-                        fontSize: responsive.hp(2.5)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        if (obscurePassword) {
-                          obscurePassword = false;
-                        } else {
-                          obscurePassword = true;
-                        }
-                      });
-                    },
-                    child: Text(
-                      "Mostrar contraseña",
-                      style: forgotPasswordStyle,
+                        fontSize: responsive.hp(2.5),
+                        onChanged: (text) {
+                          _contrasena = text;
+                        },
+                        validator: (text) {
+                          if (!alfanumericExpression.hasMatch(text!)) {
+                            return "Contraseña no valida"
+                                "\nIngrese una clave valida";
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          if (obscurePassword) {
+                            obscurePassword = false;
+                          } else {
+                            obscurePassword = true;
+                          }
+                        });
+                      },
+                      child: Text(
+                        "Mostrar contraseña",
+                        style: forgotPasswordStyle,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            Container(
-              decoration: decorationPassword,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: InputText(
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              Container(
+                decoration: decorationPassword,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: InputText(
                         label: labelInputConfirmPassword,
                         obscureText: obscureConfirmPassword,
                         borderEnabled: false,
-                        fontSize: responsive.hp(2.5)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        if (obscureConfirmPassword) {
-                          obscureConfirmPassword = false;
-                        } else {
-                          obscureConfirmPassword = true;
-                        }
-                      });
-                    },
-                    child: Text(
-                      "Mostrar contraseña",
-                      style: forgotPasswordStyle,
+                        fontSize: responsive.hp(2.5),
+                        onChanged: (text) {
+                          _confirmarContrasena = text;
+                        },
+                        validator: (text) {
+                          if (alfanumericExpression.hasMatch(text!)) {
+                            if (_confirmarContrasena == _contrasena) {
+                              return null;
+                            }
+                            return "Las contraseñas no coinciden";
+                          }
+                          return "Contraseña no valida";
+                        },
+                      ),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          if (obscureConfirmPassword) {
+                            obscureConfirmPassword = false;
+                          } else {
+                            obscureConfirmPassword = true;
+                          }
+                        });
+                      },
+                      child: Text(
+                        "Mostrar contraseña",
+                        style: forgotPasswordStyle,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'paginaPrueba');
-              },
-              style: styleLoginButton,
-              child: Text(
-                "Registrar boton",
-                style: loginButton,
+              SizedBox(
+                height: responsive.hp(10),
               ),
-            ),
-            SizedBox(
-              height: responsive.hp(10),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: () => {_registrarConductor()},
+                style: styleLoginButton,
+                child: Text(
+                  "Registrar boton",
+                  style: loginButton,
+                ),
+              ),
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+            ],
+          ),
         ),
       ),
     );
