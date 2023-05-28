@@ -17,7 +17,7 @@ class ServiceRestConductor {
         headers: {'Content-Type': 'application/json'},
       ),
       data: {
-        "idConductor": conductor.getIdConductor(),
+        "idconductor": conductor.getIdConductor(),
         "nombreCompleto": conductor.getNombreCompleto(),
         "numLicencia": conductor.getNumLicencia(),
         "fechaNacimiento": dateFormat,
@@ -41,7 +41,7 @@ class ServiceRestConductor {
           headers: {'Content-Type': 'application/json'},
         ),
         data: {
-          "idConductor": conductor.getIdConductor(),
+          "idconductor": conductor.getIdConductor(),
           "nombreCompleto": conductor.getNombreCompleto(),
           "numLicencia": conductor.getNumLicencia(),
           "fechaNacimiento": dateFormat,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/pages/page_login.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/register_form.dart';
 
@@ -59,7 +60,10 @@ class _RegisterClientPage extends State<RegisterClientPage> {
                         top: 15,
                         child: SafeArea(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.pushNamed(context, LoginPage.routeName);
+                            },
                             style: goBackButtonStyle,
                             child: const Icon(Icons.arrow_back),
                           ),

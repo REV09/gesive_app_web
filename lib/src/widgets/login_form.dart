@@ -149,7 +149,9 @@ class _LoginFormState extends State<LoginForm> {
                   TextButton(
                       onPressed: () => {
                             Navigator.pushNamed(
-                                context, RegisterClientPage.routeName)
+                              context,
+                              RegisterClientPage.routeName,
+                            )
                           },
                       child: Text(
                         "Registrate gratis",

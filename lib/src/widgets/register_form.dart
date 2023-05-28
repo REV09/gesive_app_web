@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/conductor_clase.dart';
+import 'package:gesive_web_app/src/pages/page_login.dart';
 import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
@@ -45,6 +46,7 @@ class _RegisterFormState extends State<RegisterForm> {
             await _serviceRestConductor.registrarConductor(conductor);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
+        Navigator.pushNamed(context, LoginPage.routeName);
       }
     }
   }
@@ -245,7 +247,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 height: responsive.hp(10),
               ),
               ElevatedButton(
-                onPressed: () => {_registrarConductor()},
+                onPressed: () => {
+                  _registrarConductor(),
+                },
                 style: styleLoginButton,
                 child: Text(
                   "Registrar boton",
