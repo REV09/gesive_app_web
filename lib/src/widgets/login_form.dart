@@ -39,9 +39,10 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
     TextStyle forgotPasswordStyle = TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: responsive.hp(2.1));
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.hp(2.1),
+    );
 
     TextStyle registerButton = TextStyle(
       color: Colors.purple.shade800,
@@ -50,9 +51,10 @@ class _LoginFormState extends State<LoginForm> {
     );
 
     TextStyle loginButton = TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: responsive.hp(2.4));
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.hp(2.4),
+    );
 
     BoxDecoration decorationPassword = const BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.black38)));

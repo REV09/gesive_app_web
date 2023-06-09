@@ -5,7 +5,7 @@ class Reporte {
   double posicionLon;
   String involucradosNombres;
   String involucradosVehiculos;
-  int fotos;
+  String fotos;
   int idAjustador;
   String estatus;
   String dictamenTexto;
@@ -53,7 +53,7 @@ class Reporte {
     involucradosVehiculos = involucrados;
   }
 
-  void setFotos(int fotos) {
+  void setFotos(String fotos) {
     fotos = fotos;
   }
 
@@ -87,7 +87,7 @@ class Reporte {
   double getPosicionLon() => posicionLon;
   String getInvolucradosNombres() => involucradosNombres;
   String getInvolucradosVehiculos() => involucradosVehiculos;
-  int getFotos() => fotos;
+  String getFotos() => fotos;
   int getIdAjustador() => idAjustador;
   String getEstatus() => estatus;
   String getDictamenTexto() => dictamenTexto;
