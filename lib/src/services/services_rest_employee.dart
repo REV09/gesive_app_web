@@ -18,7 +18,29 @@ class ServicesRestEmpleado {
     if (respuesta.statusCode == 200) {
       return (respuesta.data as List).map((e) => Empleado.fromJson(e)).toList();
     } else {
-      throw Exception("No se pudieron recuperar los reportes");
+      throw Exception("No se pudieron recuperar los empleados");
     }
+  }
+
+  Future<int> registrarEmpleado(Empleado empleado) async {
+    String dateFormat = "${empleado.fechaIngreso.year}"
+        "-${empleado.fechaIngreso.month}"
+        "-${empleado.fechaIngreso.day}";
+    final respuesta = await _dio.post("${urlApi}empleado",
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
+        data: {
+          "idEmpleado": empleado.getIdEmpleado(),
+          "nombreCompleto": empleado.getNombreCompleto(),
+          "fechaIngreso": dateFormat,
+          "cargo": empleado.getCargo(),
+          "nombreUsuario": empleado.getNombreUsuario(),
+          "contrasena": empleado.getContrasena()
+        });
+
+    logger.i(respuesta.statusCode);
+
+    return respuesta.statusCode!;
   }
 }

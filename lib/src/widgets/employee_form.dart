@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:gesive_web_app/src/classes/conductor_clase.dart';
-import 'package:gesive_web_app/src/pages/page_login.dart';
-import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
+import 'package:gesive_web_app/src/pages/page_form_employee.dart';
+import 'package:gesive_web_app/src/services/services_rest_employee.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
 
-class RegisterForm extends StatefulWidget {
+import '../classes/empleado_class.dart';
+
+class EmployeeForm extends StatefulWidget {
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  _EmployeeFormState createState() => _EmployeeFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
-  GlobalKey<FormState> _formKey = GlobalKey();
-  final ServiceRestConductor _serviceRestConductor = ServiceRestConductor();
+class _EmployeeFormState extends State<EmployeeForm> {
+  GlobalKey<FormState> _formKey = GlobalKey(); //?
+  final ServicesRestEmpleado _servicesRestEmpleado = ServicesRestEmpleado();
   String labelInputFullName = "Nombre completo";
-  String labelInputLicenseNumber = "Numero de licencia";
-  String labelInputBornDate = "Fecha de nacimiento";
-  String labelInputPhoneNumber = "Numero de telefono";
+  String labelInputJoinDate = "Fecha de ingreso";
+  String labelInputRole = "Cargo";
+  String labelInputUserName = "Nombre de usuario";
   String labelInputPassword = "Contraseña";
   String labelInputConfirmPassword = "Confirmar Contraseña";
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   String? _nombreCompleto;
-  String? _numeroLicencia;
-  DateTime? _fechaNacimiento;
-  String? _numeroTelefono;
+  DateTime? _fechaIngreso;
+  String? _cargo;
+  String? _nombreUsuario;
   String? _contrasena;
   String? _confirmarContrasena;
 
-  _registrarConductor() async {
+  _registrarEmpleado() async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
         ProgressDialog.show(context);
-        Conductor conductor = Conductor(
+        Empleado empleado = Empleado(
+            idEmpleado: 42, // i guess
             nombreCompleto: _nombreCompleto!,
-            numLicencia: _numeroLicencia!,
-            fechaNacimiento: _fechaNacimiento!,
-            telefono: _numeroTelefono!,
+            fechaIngreso: _fechaIngreso!,
+            cargo: _cargo!,
+            nombreUsuario: _nombreUsuario!,
             contrasena: _contrasena!);
-        conductor.setIdConductor(1);
+        //empleado.setIdEmpleado(42); //??
         int statusResponse =
-            await _serviceRestConductor.registrarConductor(conductor);
+          await _servicesRestEmpleado.registrarEmpleado(empleado);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
-        Navigator.pushNamed(context, LoginPage.routeName);
+        Navigator.pushNamed(context, FormEmployeePage.routename);
       }
     }
   }
@@ -105,11 +107,30 @@ class _RegisterFormState extends State<RegisterForm> {
                 height: responsive.hp(10),
               ),
               InputText(
-                keyboardType: TextInputType.text,
-                label: labelInputLicenseNumber,
+                keyboardType: TextInputType.datetime,
+                label: labelInputJoinDate,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
-                  _numeroLicencia = text;
+                  _fechaIngreso = DateTime.tryParse(text);
+                },
+                validator: (text) {
+                  if (!dateValidator.hasMatch(text!)) {
+                    return "Formato de fecha no valido"
+                        "\nIngrese la fecha en formato YYYY-MM-DD";
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(
+                height: responsive.hp(10),
+              ),
+              InputText(
+                keyboardType: TextInputType.text,
+                label: labelInputRole,
+                fontSize: responsive.hp(2.5),
+                onChanged: (text) {
+                  _cargo = text;
                 },
                 validator: (text) {
                   if (!alfanumericExpression.hasMatch(text!)) {
@@ -123,29 +144,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 height: responsive.hp(10),
               ),
               InputText(
-                keyboardType: TextInputType.datetime,
-                label: labelInputBornDate,
-                fontSize: responsive.hp(2.5),
-                onChanged: (text) {
-                  _fechaNacimiento = DateTime.tryParse(text);
-                },
-                validator: (text) {
-                  if (!dateValidator.hasMatch(text!)) {
-                    return "Formato de fecha no valido"
-                        "\nIngrese la fecha en formato YYYY-MM-DD";
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-              InputText(
                 keyboardType: TextInputType.number,
-                label: labelInputPhoneNumber,
+                label: labelInputUserName,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
-                  _numeroTelefono = text;
+                  _nombreUsuario = text;
                 },
                 validator: (text) {
                   if (!numberValidator.hasMatch(text!)) {
@@ -248,11 +251,11 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               ElevatedButton(
                 onPressed: () => {
-                  _registrarConductor(),
+                  _registrarEmpleado(),
                 },
                 style: styleLoginButton,
                 child: Text(
-                  "Registrarse",
+                  "Registrar empleado",
                   style: loginButton,
                 ),
               ),

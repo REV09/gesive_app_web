@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/empleado_class.dart';
+import 'package:gesive_web_app/src/pages/page_form_employee.dart';
 import 'package:gesive_web_app/src/services/services_rest_employee.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/card_report_content.dart';
@@ -60,7 +61,7 @@ class _ListEmployeePage extends State<ListEmployeePage> {
                 height: responsive.hp(5),
               ),
               ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {Navigator.pushNamed(context, FormEmployeePage.routename)},
                 style: styleRegisterEmployeeButton,
                 child: Text(
                   "Registrar empleado",
@@ -79,6 +80,7 @@ class _ListEmployeePage extends State<ListEmployeePage> {
                       itemBuilder: (context, index) {
                         if (snapshot.hasData) {
                           Empleado empleado = snapshot.data!.elementAt(index);
+                          print(empleado.getNombreCompleto());
                           SizedBox space = SizedBox(
                             height: responsive.hp(2.5),
                           );
