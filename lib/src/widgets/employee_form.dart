@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/pages/page_form_employee.dart';
+import 'package:gesive_web_app/src/pages/page_list_employee.dart';
 import 'package:gesive_web_app/src/services/services_rest_employee.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
@@ -48,7 +49,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
           await _servicesRestEmpleado.registrarEmpleado(empleado);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
-        Navigator.pushNamed(context, FormEmployeePage.routename);
+        Navigator.pushNamed(context, ListEmployeePage.routeName);
       }
     }
   }
