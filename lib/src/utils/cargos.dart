@@ -4,4 +4,4 @@ var cargos = {
   2: "Ajustador",
 };
 
-int? cargo_global;
+String? cargo_global;

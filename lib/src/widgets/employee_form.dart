@@ -264,7 +264,7 @@ class DropdownCargos extends StatefulWidget{
 }
 
 class _DropdownCargosState extends State<DropdownCargos>{
-  int dropdownValue = cargos.keys.first;
+  String dropdownValue = cargos.values.first;
 
   @override
   Widget build(BuildContext context) {
@@ -275,11 +275,11 @@ class _DropdownCargosState extends State<DropdownCargos>{
         isExpanded: true,
         value: dropdownValue,
         style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
-        items: cargos.keys.map((e) => DropdownMenuItem(value: e, child: Text(cargos[e] ?? ""))).toList(),
-        onChanged: (int? value) {
+        items: cargos.values.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+        onChanged: (String? value) {
           setState(() {
             dropdownValue = value!;
-            cargo_global = value!;
+            cargo_global = value;
           });
         }
       )
