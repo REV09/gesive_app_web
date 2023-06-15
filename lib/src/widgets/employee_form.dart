@@ -8,6 +8,7 @@ import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
 
 import '../classes/empleado_class.dart';
+import '../utils/cargos.dart';
 
 class EmployeeForm extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
   bool obscureConfirmPassword = true;
   String? _nombreCompleto;
   DateTime? _fechaIngreso;
-  String? _cargo;
+  //int? _cargo;
   String? _nombreUsuario;
   String? _contrasena;
   String? _confirmarContrasena;
@@ -41,7 +42,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
             idEmpleado: 42, // i guess
             nombreCompleto: _nombreCompleto!,
             fechaIngreso: _fechaIngreso!,
-            cargo: _cargo!,
+            cargo: cargo_global!,
             nombreUsuario: _nombreUsuario!,
             contrasena: _contrasena!);
         //empleado.setIdEmpleado(42); //??
@@ -126,35 +127,21 @@ class _EmployeeFormState extends State<EmployeeForm> {
               SizedBox(
                 height: responsive.hp(10),
               ),
-              InputText(
-                keyboardType: TextInputType.text,
-                label: labelInputRole,
-                fontSize: responsive.hp(2.5),
-                onChanged: (text) {
-                  _cargo = text;
-                },
-                validator: (text) {
-                  if (!alfanumericExpression.hasMatch(text!)) {
-                    return "Numero de licencia no valido"
-                        "\nIngrese solo letras y numeros";
-                  }
-                  return null;
-                },
-              ),
+              DropdownCargos(),
               SizedBox(
                 height: responsive.hp(10),
               ),
               InputText(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 label: labelInputUserName,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
                   _nombreUsuario = text;
                 },
                 validator: (text) {
-                  if (!numberValidator.hasMatch(text!)) {
-                    return "Numero de telefono no valido"
-                        "\nPorfavor ingrese solo numeros";
+                  if (!alfanumericExpression.hasMatch(text!)) {
+                    return "Nombre de usuario no válido"
+                        "\nPorfavor ingrese solo letras y números";
                   }
                   return null;
                 },
@@ -267,6 +254,35 @@ class _EmployeeFormState extends State<EmployeeForm> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DropdownCargos extends StatefulWidget{
+  @override
+  State<DropdownCargos> createState() => _DropdownCargosState();
+}
+
+class _DropdownCargosState extends State<DropdownCargos>{
+  int dropdownValue = cargos.keys.first;
+
+  @override
+  Widget build(BuildContext context) {
+    Responsive responsive = Responsive(context);
+    return Theme(
+      data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
+      child: DropdownButton(
+        isExpanded: true,
+        value: dropdownValue,
+        style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
+        items: cargos.keys.map((e) => DropdownMenuItem(value: e, child: Text(cargos[e] ?? ""))).toList(),
+        onChanged: (int? value) {
+          setState(() {
+            dropdownValue = value!;
+            cargo_global = value!;
+          });
+        }
+      )
     );
   }
 }

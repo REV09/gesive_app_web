@@ -1,8 +1,10 @@
+import 'package:gesive_web_app/src/utils/cargos.dart';
+
 class Empleado {
   int idEmpleado;
   String nombreCompleto;
   DateTime fechaIngreso = DateTime.now();
-  String cargo;
+  int cargo;
   String nombreUsuario;
   String contrasena;
 
@@ -18,7 +20,7 @@ class Empleado {
   Empleado.inicioSesion({
     this.idEmpleado = 0,
     this.nombreCompleto = "empty",
-    this.cargo = "Empty",
+    this.cargo = 0,
     required this.nombreUsuario,
     required this.contrasena,
   });
@@ -35,7 +37,7 @@ class Empleado {
     fechaIngreso = fecha;
   }
 
-  void setCargo(String cargo) {
+  void setCargo(int cargo) {
     this.cargo = cargo;
   }
 
@@ -50,7 +52,7 @@ class Empleado {
   int getIdEmpleado() => idEmpleado;
   String getNombreCompleto() => nombreCompleto;
   DateTime getFechaIngreso() => fechaIngreso;
-  String getCargo() => cargo;
+  String getCargo() => cargos[cargo] ?? "";
   String getNombreUsuario() => nombreUsuario;
   String getContrasena() => contrasena;
 
