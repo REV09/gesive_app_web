@@ -52,7 +52,7 @@ class Empleado {
   int getIdEmpleado() => idEmpleado;
   String getNombreCompleto() => nombreCompleto;
   DateTime getFechaIngreso() => fechaIngreso;
-  String getCargo() => cargos[cargo] ?? "";
+  String getCargo() => cargo;
   String getNombreUsuario() => nombreUsuario;
   String getContrasena() => contrasena;
 
