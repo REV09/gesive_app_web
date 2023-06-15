@@ -4,7 +4,7 @@ class Empleado {
   int idEmpleado;
   String nombreCompleto;
   DateTime fechaIngreso = DateTime.now();
-  int cargo;
+  String cargo;
   String nombreUsuario;
   String contrasena;
 
@@ -20,7 +20,7 @@ class Empleado {
   Empleado.inicioSesion({
     this.idEmpleado = 0,
     this.nombreCompleto = "empty",
-    this.cargo = 0,
+    this.cargo = "empty",
     required this.nombreUsuario,
     required this.contrasena,
   });
@@ -37,7 +37,7 @@ class Empleado {
     fechaIngreso = fecha;
   }
 
-  void setCargo(int cargo) {
+  void setCargo(String cargo) {
     this.cargo = cargo;
   }
 
