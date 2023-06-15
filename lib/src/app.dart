@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
+      home: FormEmployeePage(),
       routes: {
         LoginPage.routeName: (_) => LoginPage(),
         RegisterClientPage.routeName: (_) => RegisterClientPage(),
