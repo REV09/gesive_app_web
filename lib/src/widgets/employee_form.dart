@@ -46,7 +46,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
             contrasena: _contrasena!);
         //empleado.setIdEmpleado(42); //??
         int statusResponse =
-          await _servicesRestEmpleado.registrarEmpleado(empleado);
+            await _servicesRestEmpleado.registrarEmpleado(empleado);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
         Navigator.pushNamed(context, ListEmployeePage.routeName);
@@ -122,7 +122,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                   return null;
                 },
               ),
-
               SizedBox(
                 height: responsive.hp(10),
               ),
@@ -145,16 +144,16 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 height: responsive.hp(10),
               ),
               InputText(
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 label: labelInputUserName,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
                   _nombreUsuario = text;
                 },
                 validator: (text) {
-                  if (!numberValidator.hasMatch(text!)) {
-                    return "Numero de telefono no valido"
-                        "\nPorfavor ingrese solo numeros";
+                  if (!alfanumericExpression.hasMatch(text!)) {
+                    return "Nombre de usuario no válido"
+                        "\nIngrese solo letras y numeros";
                   }
                   return null;
                 },
