@@ -51,4 +51,23 @@ class Conductor {
   String getFechaNacimiento() => fechaNacimiento;
   String getTelefono() => telefono;
   String getContrasena() => contrasena;
+
+  factory Conductor.fromJson(Map<String, dynamic> json) => Conductor(
+    idConductor: json["idconductor"],
+    nombreCompleto: json["nombreCompleto"],
+    numLicencia: json["numLicencia"],
+    fechaNacimiento: json["fechaNacimiento"],
+    telefono: json["telefono"],
+    contrasena: json["contrasena"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "idconductor": idConductor,
+    "nombreCompleto": nombreCompleto,
+    "numLicencia": numLicencia,
+    "fechaNacimiento": fechaNacimiento,
+    "telefono": telefono,
+    "contrasena": contrasena,
+  };
+
 }

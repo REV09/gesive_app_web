@@ -53,4 +53,36 @@ class ServicesRestAuthentication{
     return jwtToken;
   }
 
+  Future<Empleado> validarTokenEmpleado(String token) async{
+    final respuesta = await _dio.post(
+      "${urlApi}autenticacion/token",
+      options: Options(
+        headers: {'Content-type' : 'application/json',
+          'Authorization' : 'Bearer $token'
+        }
+      )
+    );
+
+    _logger.i(respuesta.data);
+
+    var empleadoObtenido = Empleado.fromJson(respuesta.data);
+    return empleadoObtenido;
+  }
+
+  Future<Conductor> validarTokenConductor(String token) async{
+    final respuesta = await _dio.post(
+        "${urlApi}autenticacion/token",
+        options: Options(
+            headers: {'Content-type' : 'application/json',
+              'Authorization' : 'Bearer $token'
+            }
+        )
+    );
+
+    _logger.i(respuesta.data);
+
+    var conductorObtenido = Conductor.fromJson(respuesta.data);
+    return conductorObtenido;
+  }
+
 }
