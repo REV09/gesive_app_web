@@ -57,8 +57,6 @@ class ServicesRestAuthentication {
     } else {
       jwtToken = "";
     }
-
-    jwtToken = respuesta.data.toString();
     return jwtToken;
   }
 

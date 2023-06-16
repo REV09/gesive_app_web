@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/conductor_clase.dart';
 import 'package:gesive_web_app/src/classes/empleado_class.dart';
+import 'package:gesive_web_app/src/pages/page_principal_main.dart';
 import 'package:gesive_web_app/src/pages/page_register.dart';
 import 'package:gesive_web_app/src/services/services_rest_authentication.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
@@ -34,14 +35,18 @@ class _LoginFormState extends State<LoginForm> {
               telefono: _phoneOrUserName!, contrasena: _password!);
           String token = await _servicesRestAuthentication
               .validarSesionConductor(conductor);
-          ProgressDialog.dismiss(context);
+          await ProgressDialog.dismiss(context);
           if (token.isNotEmpty) {
-            //TODO aqui va la ruta para el menu principal de un conductor
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PrincipalMain(token: token, sesion: "Conductor")),
+            );
           } else {
             await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text("Usuario invalido"),
+                title: const Text("Inicio no valido"),
                 content: Text("El usuario o contraseña no es valido\n"
                     "por favor verfique su informacion"),
                 actions: <Widget>[
@@ -58,17 +63,20 @@ class _LoginFormState extends State<LoginForm> {
               nombreUsuario: _phoneOrUserName!, contrasena: _password!);
           String token =
               await _servicesRestAuthentication.validarSesionEmpleado(empleado);
-          ProgressDialog.dismiss(context);
+          await ProgressDialog.dismiss(context);
           if (token.isNotEmpty) {
             Empleado empleado =
                 await _servicesRestAuthentication.validarTokenEmpleado(token);
-            //TODO aqui va la ruta para el menu principal del empleado ya sea
-            //admnistrador o ajustador
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PrincipalMain(token: token, sesion: empleado.getCargo())),
+            );
           } else {
             await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text("Usuario invalido"),
+                title: const Text("Inicio no valido"),
                 content: Text("El usuario o contraseña no es valido\n"
                     "por favor verfique su informacion"),
                 actions: <Widget>[

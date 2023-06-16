@@ -7,6 +7,9 @@ import 'package:gesive_web_app/src/widgets/card_widget.dart';
 import 'package:logger/logger.dart';
 
 class HistoryReportsPage extends StatefulWidget {
+  String token;
+  HistoryReportsPage({required this.token});
+
   static const routeName = 'historyReports';
   _HistoryReportsPage createState() => _HistoryReportsPage();
 }
