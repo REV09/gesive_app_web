@@ -5,84 +5,98 @@ import 'package:gesive_web_app/src/classes/empleado_class.dart';
 import 'package:gesive_web_app/src/services/api_configuraciones.dart';
 import 'package:logger/logger.dart';
 
-class ServicesRestAuthentication{
+class ServicesRestAuthentication {
   final Dio _dio = Dio();
   final Logger _logger = Logger();
 
-  Future<String> validarSesionConductor(Conductor conductor) async{
-    final respuesta = await _dio.post(
-      "${urlApi}autenticacion/conductor",
-      options: Options(
-        headers: {'Content-type' : 'application/json'},
-      ),
-      data: {
-        "idconductor": conductor.getIdConductor(),
-        "nombreCompleto": conductor.getNombreCompleto(),
-        "numLicencia": conductor.getNumLicencia(),
-        "fechaNacimiento": conductor.getFechaNacimiento(),
-        "telefono": conductor.getTelefono(),
-        "contrasena": conductor.getContrasena()
-      }
-    );
+  Future<String> validarSesionConductor(Conductor conductor) async {
+    final respuesta = await _dio.post("${urlApi}autenticacion/conductor",
+        options: Options(
+          headers: {'Content-type': 'application/json'},
+        ),
+        data: {
+          "idconductor": conductor.getIdConductor(),
+          "nombreCompleto": conductor.getNombreCompleto(),
+          "numLicencia": conductor.getNumLicencia(),
+          "fechaNacimiento": conductor.getFechaNacimiento(),
+          "telefono": conductor.getTelefono(),
+          "contrasena": conductor.getContrasena()
+        });
 
     _logger.i(respuesta.data);
+    String jwtToken;
 
-    String jwtToken = respuesta.data.toString();
+    if (respuesta.statusCode == 200) {
+      jwtToken = respuesta.data.toString();
+    } else {
+      jwtToken = "";
+    }
+
     return jwtToken;
   }
 
-  Future<String> validarSesionEmpleado(Empleado empleado) async{
-    final respuesta = await _dio.post(
-      "${urlApi}autenticacion/empleado",
-      options: Options(
-        headers: {'Content-type' : 'application/json'},
-      ),
-      data: {
-        "idEmpleado": empleado.getIdEmpleado(),
-        "nombreCompleto": empleado.getNombreCompleto(),
-        "fechaIngreso": empleado.getFechaIngreso(),
-        "cargo": empleado.getCargo(),
-        "nombreUsuario": empleado.getNombreUsuario(),
-        "contrasena": empleado.getContrasena()
-      }
-    );
+  Future<String> validarSesionEmpleado(Empleado empleado) async {
+    final respuesta = await _dio.post("${urlApi}autenticacion/empleado",
+        options: Options(
+          headers: {'Content-type': 'application/json'},
+        ),
+        data: {
+          "idEmpleado": empleado.getIdEmpleado(),
+          "nombreCompleto": empleado.getNombreCompleto(),
+          "fechaIngreso": empleado.getFechaIngreso(),
+          "cargo": empleado.getCargo(),
+          "nombreUsuario": empleado.getNombreUsuario(),
+          "contrasena": empleado.getContrasena()
+        });
 
     _logger.i(respuesta.data);
+    String jwtToken;
 
-    String jwtToken = respuesta.data.toString();
+    if (respuesta.statusCode == 200) {
+      jwtToken = respuesta.data.toString();
+    } else {
+      jwtToken = "";
+    }
+
+    jwtToken = respuesta.data.toString();
     return jwtToken;
   }
 
-  Future<Empleado> validarTokenEmpleado(String token) async{
-    final respuesta = await _dio.post(
-      "${urlApi}autenticacion/token",
-      options: Options(
-        headers: {'Content-type' : 'application/json',
-          'Authorization' : 'Bearer $token'
-        }
-      )
-    );
+  Future<Empleado> validarTokenEmpleado(String token) async {
+    final respuesta = await _dio.post("${urlApi}autenticacion/token",
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer $token'
+        }));
 
     _logger.i(respuesta.data);
+    var empleadoObtenido;
 
-    var empleadoObtenido = Empleado.fromJson(respuesta.data);
+    if (respuesta.statusCode == 200) {
+      empleadoObtenido = Empleado.fromJson(respuesta.data);
+    } else {
+      empleadoObtenido = null;
+    }
+
     return empleadoObtenido;
   }
 
-  Future<Conductor> validarTokenConductor(String token) async{
-    final respuesta = await _dio.post(
-        "${urlApi}autenticacion/token",
-        options: Options(
-            headers: {'Content-type' : 'application/json',
-              'Authorization' : 'Bearer $token'
-            }
-        )
-    );
+  Future<Conductor> validarTokenConductor(String token) async {
+    final respuesta = await _dio.post("${urlApi}autenticacion/token",
+        options: Options(headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer $token'
+        }));
 
     _logger.i(respuesta.data);
+    var conductorObtenido;
 
-    var conductorObtenido = Conductor.fromJson(respuesta.data);
+    if (respuesta.statusCode == 200) {
+      conductorObtenido = Conductor.fromJson(respuesta.data);
+    } else {
+      conductorObtenido = null;
+    }
+
     return conductorObtenido;
   }
-
 }

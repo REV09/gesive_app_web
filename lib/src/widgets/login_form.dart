@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/conductor_clase.dart';
+import 'package:gesive_web_app/src/classes/empleado_class.dart';
 import 'package:gesive_web_app/src/pages/page_register.dart';
-import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
+import 'package:gesive_web_app/src/services/services_rest_authentication.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
@@ -13,24 +14,73 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   String labelInputEmail = "Telefono o usuario";
   String labelInputPassword = "Contraseña";
   String? _phoneOrUserName;
   String? _password;
 
-  final ServiceRestConductor _serviceRestConductor = ServiceRestConductor();
+  final ServicesRestAuthentication _servicesRestAuthentication =
+      ServicesRestAuthentication();
 
   _autenticarUsuario() async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
         ProgressDialog.show(context);
-        Conductor conductor = Conductor.inicioSesion(
-            telefono: _phoneOrUserName!, contrasena: _password!);
-        int statusResponse =
-            await _serviceRestConductor.autenticateLogin(conductor);
+        if (phoneNumberValidator.hasMatch(_phoneOrUserName!)) {
+          Conductor conductor = Conductor.inicioSesion(
+              telefono: _phoneOrUserName!, contrasena: _password!);
+          String token = await _servicesRestAuthentication
+              .validarSesionConductor(conductor);
+          ProgressDialog.dismiss(context);
+          if (token.isNotEmpty) {
+            //TODO aqui va la ruta para el menu principal de un conductor
+          } else {
+            await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text("Usuario invalido"),
+                content: Text("El usuario o contraseña no es valido\n"
+                    "por favor verfique su informacion"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => {Navigator.of(context).pop()},
+                    child: Text("Aceptar"),
+                  ),
+                ],
+              ),
+            );
+          }
+        } else {
+          Empleado empleado = Empleado.inicioSesion(
+              nombreUsuario: _phoneOrUserName!, contrasena: _password!);
+          String token =
+              await _servicesRestAuthentication.validarSesionEmpleado(empleado);
+          ProgressDialog.dismiss(context);
+          if (token.isNotEmpty) {
+            Empleado empleado =
+                await _servicesRestAuthentication.validarTokenEmpleado(token);
+            //TODO aqui va la ruta para el menu principal del empleado ya sea
+            //admnistrador o ajustador
+          } else {
+            await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text("Usuario invalido"),
+                content: Text("El usuario o contraseña no es valido\n"
+                    "por favor verfique su informacion"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => {Navigator.of(context).pop()},
+                    child: Text("Aceptar"),
+                  ),
+                ],
+              ),
+            );
+          }
+        }
       }
     }
   }
