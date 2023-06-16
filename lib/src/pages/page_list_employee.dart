@@ -129,9 +129,6 @@ class _ListEmployeePage extends State<ListEmployeePage> {
     String cargo = employee.getCargo();
     String userName = employee.getNombreUsuario();
 
-    String dateAdmission =
-        "${employee.getFechaIngreso().day}/${employee.getFechaIngreso().month}/${employee.getFechaIngreso().year}";
-
     return Row(
       children: <Widget>[
         SizedBox(
@@ -175,7 +172,7 @@ class _ListEmployeePage extends State<ListEmployeePage> {
                     children: <Widget>[
                       Text("Nombre: ${employee.getNombreCompleto()} \n"),
                       Text("Cargo: ${employee.getCargo()} \n"),
-                      Text("Fecha de ingreso: $dateAdmission \n"),
+                      Text("Fecha de ingreso: ${employee.getFechaIngreso()} \n"),
                       Text(
                           "Nombre de usuario: ${employee.getNombreUsuario()} \n")
                     ],

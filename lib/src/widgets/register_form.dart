@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:gesive_web_app/src/classes/conductor_clase.dart';
 import 'package:gesive_web_app/src/pages/page_login.dart';
 import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
@@ -25,7 +26,7 @@ class _RegisterFormState extends State<RegisterForm> {
   bool obscureConfirmPassword = true;
   String? _nombreCompleto;
   String? _numeroLicencia;
-  DateTime? _fechaNacimiento;
+  String? _fechaNacimiento;
   String? _numeroTelefono;
   String? _contrasena;
   String? _confirmarContrasena;
@@ -127,7 +128,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 label: labelInputBornDate,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
-                  _fechaNacimiento = DateTime.tryParse(text);
+                  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                  DateTime date = DateTime.tryParse(text)!;
+                  _fechaNacimiento = formatter.format(date);
                 },
                 validator: (text) {
                   if (!dateValidator.hasMatch(text!)) {

@@ -3,7 +3,7 @@ import 'package:gesive_web_app/src/utils/cargos.dart';
 class Empleado {
   int idEmpleado;
   String nombreCompleto;
-  DateTime fechaIngreso = DateTime.now();
+  String fechaIngreso = "2023-01-01";
   String cargo;
   String nombreUsuario;
   String contrasena;
@@ -33,7 +33,7 @@ class Empleado {
     nombreCompleto = nombre;
   }
 
-  void setFechaIngreso(DateTime fecha) {
+  void setFechaIngreso(String fecha) {
     fechaIngreso = fecha;
   }
 
@@ -51,7 +51,7 @@ class Empleado {
 
   int getIdEmpleado() => idEmpleado;
   String getNombreCompleto() => nombreCompleto;
-  DateTime getFechaIngreso() => fechaIngreso;
+  String getFechaIngreso() => fechaIngreso;
   String getCargo() => cargo;
   String getNombreUsuario() => nombreUsuario;
   String getContrasena() => contrasena;
@@ -59,7 +59,7 @@ class Empleado {
   factory Empleado.fromJson(Map<String, dynamic> json) => Empleado(
         idEmpleado: json["idEmpleado"],
         nombreCompleto: json["nombreCompleto"],
-        fechaIngreso: DateTime.parse(json["fechaIngreso"]),
+        fechaIngreso: json["fechaIngreso"],
         cargo: json["cargo"],
         nombreUsuario: json["nombreUsuario"],
         contrasena: json["contrasena"],
@@ -68,8 +68,7 @@ class Empleado {
   Map<String, dynamic> toJson() => {
         "idEmpleado": idEmpleado,
         "nombreCompleto": nombreCompleto,
-        "fechaIngreso":
-            "${fechaIngreso.year.toString().padLeft(4, '0')}-${fechaIngreso.month.toString().padLeft(2, '0')}-${fechaIngreso.day.toString().padLeft(2, '0')}",
+        "fechaIngreso": fechaIngreso,
         "cargo": cargo,
         "nombreUsuario": nombreUsuario,
         "contrasena": contrasena,

@@ -32,9 +32,6 @@ class ServicesRestEmpleado {
   }
 
   Future<int> registrarEmpleado(Empleado empleado) async {
-    String dateFormat = "${empleado.fechaIngreso.year}"
-        "-${empleado.fechaIngreso.month}"
-        "-${empleado.fechaIngreso.day}";
     final respuesta = await _dio.post("${urlApi}empleado",
         options: Options(
           headers: {'Content-Type': 'application/json', 'Authorization': token},
@@ -42,7 +39,7 @@ class ServicesRestEmpleado {
         data: {
           "idEmpleado": empleado.getIdEmpleado(),
           "nombreCompleto": empleado.getNombreCompleto(),
-          "fechaIngreso": dateFormat,
+          "fechaIngreso": empleado.getFechaIngreso(),
           "cargo": empleado.getCargo(),
           "nombreUsuario": empleado.getNombreUsuario(),
           "contrasena": empleado.getContrasena()

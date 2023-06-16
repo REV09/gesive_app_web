@@ -2,7 +2,7 @@ class Conductor {
   int idConductor;
   String nombreCompleto;
   String numLicencia;
-  DateTime fechaNacimiento = DateTime.now();
+  String fechaNacimiento = "2023-01-01";
   String telefono;
   String contrasena;
 
@@ -33,7 +33,7 @@ class Conductor {
     numLicencia = numeroLicencia;
   }
 
-  void setFechaNacimiento(DateTime fecha) {
+  void setFechaNacimiento(String fecha) {
     fechaNacimiento = fecha;
   }
 
@@ -48,7 +48,7 @@ class Conductor {
   int getIdConductor() => idConductor;
   String getNombreCompleto() => nombreCompleto;
   String getNumLicencia() => numLicencia;
-  DateTime getFechaNacimiento() => fechaNacimiento;
+  String getFechaNacimiento() => fechaNacimiento;
   String getTelefono() => telefono;
   String getContrasena() => contrasena;
 }

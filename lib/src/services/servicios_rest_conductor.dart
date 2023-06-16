@@ -14,9 +14,6 @@ class ServiceRestConductor {
   final Logger _logger = Logger();
 
   Future<int> autenticateLogin(Conductor conductor) async {
-    String dateFormat = "${conductor.fechaNacimiento.year}"
-        "-${conductor.fechaNacimiento.month}"
-        "-${conductor.fechaNacimiento.day}";
     final respuesta = await _dio.post(
       "${urlApi}authConductor",
       options: Options(
@@ -26,7 +23,7 @@ class ServiceRestConductor {
         "idconductor": conductor.getIdConductor(),
         "nombreCompleto": conductor.getNombreCompleto(),
         "numLicencia": conductor.getNumLicencia(),
-        "fechaNacimiento": dateFormat,
+        "fechaNacimiento": conductor.getFechaNacimiento(),
         "telefono": conductor.getTelefono(),
         "contrasena": conductor.getContrasena()
       },
@@ -39,9 +36,6 @@ class ServiceRestConductor {
   }
 
   Future<int> registrarConductor(Conductor conductor) async {
-    String dateFormat = "${conductor.fechaNacimiento.year}"
-        "-${conductor.fechaNacimiento.month}"
-        "-${conductor.fechaNacimiento.day}";
     final respuesta = await _dio.post("${urlApi}conductor",
         options: Options(
           headers: {'Content-Type': 'application/json'},
@@ -50,7 +44,7 @@ class ServiceRestConductor {
           "idconductor": conductor.getIdConductor(),
           "nombreCompleto": conductor.getNombreCompleto(),
           "numLicencia": conductor.getNumLicencia(),
-          "fechaNacimiento": dateFormat,
+          "fechaNacimiento": conductor.getFechaNacimiento(),
           "telefono": conductor.getTelefono(),
           "contrasena": conductor.getContrasena()
         });

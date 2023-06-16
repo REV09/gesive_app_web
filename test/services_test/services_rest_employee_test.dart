@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gesive_web_app/src/classes/empleado_class.dart';
 import 'package:gesive_web_app/src/services/services_rest_employee.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   test('Prueba de obtener empleados', () async {
@@ -11,10 +12,12 @@ void main() {
 
   test('Prueba de registrar empleado', () async {
     ServicesRestEmpleado servicesRestEmpleado = ServicesRestEmpleado();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    DateTime date = DateTime.now();
     var empleado = Empleado(
         idEmpleado: 1,
         nombreCompleto: "Prueba",
-        fechaIngreso: DateTime.now(),
+        fechaIngreso: formatter.format(date),
         cargo: "Prueba",
         nombreUsuario: "Prueba",
         contrasena: "Prueba");

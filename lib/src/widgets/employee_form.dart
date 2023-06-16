@@ -6,6 +6,7 @@ import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
+import 'package:intl/intl.dart';
 
 import '../classes/empleado_class.dart';
 import '../utils/cargos.dart';
@@ -27,7 +28,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   String? _nombreCompleto;
-  DateTime? _fechaIngreso;
+  String? _fechaIngreso;
   //int? _cargo;
   String? _nombreUsuario;
   String? _contrasena;
@@ -113,7 +114,9 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 label: labelInputJoinDate,
                 fontSize: responsive.hp(2.5),
                 onChanged: (text) {
-                  _fechaIngreso = DateTime.tryParse(text);
+                  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                  DateTime date = DateTime.tryParse(text)!;
+                  _fechaIngreso = formatter.format(date);
                 },
                 validator: (text) {
                   if (!dateValidator.hasMatch(text!)) {
