@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 
 void main() {
   test('Prueba de obtener empleados', () async {
+    String token = "";
     ServicesRestEmpleado servicesRestEmpleado = ServicesRestEmpleado();
-    var empleados = await servicesRestEmpleado.obtenerEmpleados();
+    var empleados = await servicesRestEmpleado.obtenerEmpleados(token);
     expect(empleados.length, 1);
   });
 
   test('Prueba de registrar empleado', () async {
+    String token = "";
     ServicesRestEmpleado servicesRestEmpleado = ServicesRestEmpleado();
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     DateTime date = DateTime.now();
@@ -21,7 +23,8 @@ void main() {
         cargo: "Prueba",
         nombreUsuario: "Prueba",
         contrasena: "Prueba");
-    var respuesta = await servicesRestEmpleado.registrarEmpleado(empleado);
+    var respuesta =
+        await servicesRestEmpleado.registrarEmpleado(empleado, token);
     expect(respuesta, 200);
   });
 }

@@ -7,6 +7,9 @@ import 'package:gesive_web_app/src/widgets/card_report_content.dart';
 import 'package:gesive_web_app/src/widgets/card_widget.dart';
 
 class ListEmployeePage extends StatefulWidget {
+  String token;
+  ListEmployeePage({required this.token});
+
   static const routeName = "listEmployee";
   _ListEmployeePage createState() => _ListEmployeePage();
 }
@@ -73,7 +76,7 @@ class _ListEmployeePage extends State<ListEmployeePage> {
             ),
             Expanded(
               child: FutureBuilder(
-                future: servicesRestEmpleado.obtenerEmpleados(),
+                future: servicesRestEmpleado.obtenerEmpleados(widget.token),
                 builder: ((context, snapshot) {
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
@@ -172,7 +175,8 @@ class _ListEmployeePage extends State<ListEmployeePage> {
                     children: <Widget>[
                       Text("Nombre: ${employee.getNombreCompleto()} \n"),
                       Text("Cargo: ${employee.getCargo()} \n"),
-                      Text("Fecha de ingreso: ${employee.getFechaIngreso()} \n"),
+                      Text(
+                          "Fecha de ingreso: ${employee.getFechaIngreso()} \n"),
                       Text(
                           "Nombre de usuario: ${employee.getNombreUsuario()} \n")
                     ],

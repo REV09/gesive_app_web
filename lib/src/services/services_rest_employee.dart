@@ -3,17 +3,11 @@ import 'package:gesive_web_app/src/classes/empleado_class.dart';
 import 'package:gesive_web_app/src/services/api_configuraciones.dart';
 import 'package:logger/logger.dart';
 
-String token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZEVtcGxlYWRvIjowLCJub21"
-    "icmVDb21wbGV0byI6InN0cmluZyIsImZlY2hhSW5ncmVzbyI6InN0cmluZyIsImNhcmdvIjoic3RyaW"
-    "5nIiwibm9tYnJlVXN1YXJpbyI6ImNhemFGdXJyb3M5MDQ1IiwiY29udHJhc2VuYSI6IkhBTE9jZWEyMD"
-    "YtIiwiZXhwIjoxNjg2ODg0NTY2fQ.KPcdV5ryI6UyfyMuea-6EQvsPDENVaIb8KwmRq2a4UA";
-
 class ServicesRestEmpleado {
   final Dio _dio = Dio();
   final Logger logger = Logger();
 
-  Future<List<Empleado>> obtenerEmpleados() async {
+  Future<List<Empleado>> obtenerEmpleados(String token) async {
     final respuesta = await _dio.get(
       "${urlApi}empleados",
       options: Options(
@@ -31,10 +25,13 @@ class ServicesRestEmpleado {
     }
   }
 
-  Future<int> registrarEmpleado(Empleado empleado) async {
+  Future<int> registrarEmpleado(Empleado empleado, String token) async {
     final respuesta = await _dio.post("${urlApi}empleado",
         options: Options(
-          headers: {'Content-Type': 'application/json', 'Authorization': token},
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer $token"
+          },
         ),
         data: {
           "idEmpleado": empleado.getIdEmpleado(),
@@ -46,6 +43,20 @@ class ServicesRestEmpleado {
         });
 
     logger.i(respuesta.statusCode);
+
+    return respuesta.statusCode!;
+  }
+
+  Future<int> eliminarEmpleado(int idEmpleado, String token) async {
+    final respuesta = await _dio.delete(
+      "${urlApi}empleado?id_empleado=$idEmpleado",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
 
     return respuesta.statusCode!;
   }

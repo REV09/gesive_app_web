@@ -12,6 +12,10 @@ import '../classes/empleado_class.dart';
 import '../utils/cargos.dart';
 
 class EmployeeForm extends StatefulWidget {
+  String token;
+
+  EmployeeForm({required this.token});
+
   @override
   _EmployeeFormState createState() => _EmployeeFormState();
 }
@@ -47,8 +51,8 @@ class _EmployeeFormState extends State<EmployeeForm> {
             nombreUsuario: _nombreUsuario!,
             contrasena: _contrasena!);
         //empleado.setIdEmpleado(42); //??
-        int statusResponse =
-          await _servicesRestEmpleado.registrarEmpleado(empleado);
+        int statusResponse = await _servicesRestEmpleado.registrarEmpleado(
+            empleado, widget.token);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
         Navigator.pushNamed(context, ListEmployeePage.routeName);
@@ -126,7 +130,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                   return null;
                 },
               ),
-
               SizedBox(
                 height: responsive.hp(10),
               ),
@@ -261,31 +264,31 @@ class _EmployeeFormState extends State<EmployeeForm> {
   }
 }
 
-class DropdownCargos extends StatefulWidget{
+class DropdownCargos extends StatefulWidget {
   @override
   State<DropdownCargos> createState() => _DropdownCargosState();
 }
 
-class _DropdownCargosState extends State<DropdownCargos>{
+class _DropdownCargosState extends State<DropdownCargos> {
   String dropdownValue = cargos.values.first;
 
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
     return Theme(
-      data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
-      child: DropdownButton(
-        isExpanded: true,
-        value: dropdownValue,
-        style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
-        items: cargos.values.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-        onChanged: (String? value) {
-          setState(() {
-            dropdownValue = value!;
-            cargo_global = value;
-          });
-        }
-      )
-    );
+        data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
+        child: DropdownButton(
+            isExpanded: true,
+            value: dropdownValue,
+            style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
+            items: cargos.values
+                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                .toList(),
+            onChanged: (String? value) {
+              setState(() {
+                dropdownValue = value!;
+                cargo_global = value;
+              });
+            }));
   }
 }

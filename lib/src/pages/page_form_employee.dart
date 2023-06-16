@@ -5,6 +5,10 @@ import '../utils/responsive.dart';
 import '../widgets/employee_form.dart';
 
 class FormEmployeePage extends StatefulWidget {
+  String token;
+
+  FormEmployeePage({required this.token});
+
   static const routename = "formEmployee";
   _FormEmployeePage createState() => _FormEmployeePage();
 }
@@ -19,7 +23,7 @@ class _FormEmployeePage extends State<FormEmployeePage> {
 
     const String title = "Registrar nuevo empleado";
     final TextStyle textLoginStyle =
-      TextStyle(fontSize: responsive.dp(2), color: Colors.white);
+        TextStyle(fontSize: responsive.dp(2), color: Colors.white);
 
     ButtonStyle goBackButtonStyle = ElevatedButton.styleFrom(
       padding: const EdgeInsets.all(10),
@@ -84,7 +88,9 @@ class _FormEmployeePage extends State<FormEmployeePage> {
                   SizedBox(
                     height: responsive.dp(5),
                   ),
-                  EmployeeForm(),
+                  EmployeeForm(
+                    token: widget.token,
+                  ),
                 ],
               ),
             ),
@@ -93,5 +99,4 @@ class _FormEmployeePage extends State<FormEmployeePage> {
       ),
     );
   }
-
 }

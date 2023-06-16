@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       routes: {
         LoginPage.routeName: (_) => LoginPage(),
         RegisterClientPage.routeName: (_) => RegisterClientPage(),
-        FormEmployeePage.routename: (_) => FormEmployeePage()
       },
     );
   }
