@@ -35,36 +35,23 @@ class _LoginFormState extends State<LoginForm> {
               telefono: _phoneOrUserName!, contrasena: _password!);
           String token = await _servicesRestAuthentication
               .validarSesionConductor(conductor);
-          await ProgressDialog.dismiss(context);
           if (token.isNotEmpty) {
+            await ProgressDialog.dismiss(context);
             Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) =>
                       PrincipalMain(token: token, sesion: "Conductor")),
             );
           } else {
-            await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text("Inicio no valido"),
-                content: Text("El usuario o contraseña no es valido\n"
-                    "por favor verfique su informacion"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => {Navigator.of(context).pop()},
-                    child: Text("Aceptar"),
-                  ),
-                ],
-              ),
-            );
+            _errorInicioSesion();
           }
         } else {
           Empleado empleado = Empleado.inicioSesion(
               nombreUsuario: _phoneOrUserName!, contrasena: _password!);
           String token =
               await _servicesRestAuthentication.validarSesionEmpleado(empleado);
-          await ProgressDialog.dismiss(context);
           if (token.isNotEmpty) {
+            await ProgressDialog.dismiss(context);
             Empleado empleado =
                 await _servicesRestAuthentication.validarTokenEmpleado(token);
             Navigator.of(context).push(
@@ -73,24 +60,29 @@ class _LoginFormState extends State<LoginForm> {
                       PrincipalMain(token: token, sesion: empleado.getCargo())),
             );
           } else {
-            await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text("Inicio no valido"),
-                content: Text("El usuario o contraseña no es valido\n"
-                    "por favor verfique su informacion"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => {Navigator.of(context).pop()},
-                    child: Text("Aceptar"),
-                  ),
-                ],
-              ),
-            );
+            _errorInicioSesion();
           }
         }
       }
     }
+  }
+
+  void _errorInicioSesion() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Inicio no valido"),
+        content: const Text("El usuario o contraseña no es valido\n"
+            "por favor verfique su informacion"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                {Navigator.of(context).pop(), Navigator.of(context).pop()},
+            child: const Text("Aceptar"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

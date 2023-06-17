@@ -31,7 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String? _contrasena;
   String? _confirmarContrasena;
 
-  _registrarConductor() async {
+  void _registrarConductor() async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
@@ -42,13 +42,48 @@ class _RegisterFormState extends State<RegisterForm> {
             fechaNacimiento: _fechaNacimiento!,
             telefono: _numeroTelefono!,
             contrasena: _contrasena!);
-        conductor.setIdConductor(1);
         int statusResponse =
             await _serviceRestConductor.registrarConductor(conductor);
-        ProgressDialog.dismiss(context);
-        Navigator.of(context).pop();
-        Navigator.pushNamed(context, LoginPage.routeName);
+        _verifyStatusRequest(statusResponse);
       }
+    }
+  }
+
+  void _verifyStatusRequest(int responseCode) async {
+    if (responseCode == 200) {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Registro completado"),
+          content: Text("Se ha registrado el usuario $_numeroTelefono"
+              "\nCon contraseña: $_contrasena"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => {Navigator.of(context).pop()},
+              child: const Text("Aceptar"),
+            ),
+          ],
+        ),
+      );
+      ProgressDialog.dismiss(context);
+      Navigator.of(context).pop();
+      Navigator.pushNamed(context, LoginPage.routeName);
+    } else {
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Registro incompleto"),
+          content: const Text("Ocurrio un error inesperado y no se completo"
+              "el registro"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => {Navigator.of(context).pop()},
+              child: const Text("Aceptar"),
+            ),
+          ],
+        ),
+      );
+      ProgressDialog.dismiss(context);
     }
   }
 

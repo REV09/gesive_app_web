@@ -32,7 +32,7 @@ class ServiceRestConductor {
   Future<int> registrarConductor(Conductor conductor) async {
     final respuesta = await _dio.post("${urlApi}conductor",
         options: Options(
-          headers: {'Content-Type': 'application/json'},
+          headers: {'Content-type': 'application/json'},
         ),
         data: {
           "idconductor": conductor.getIdConductor(),
