@@ -37,7 +37,7 @@ class ServicesRestReporte {
   Future<List<Reporte>> obtenerReportesAjustador(
       int idAjustador, String token) async {
     final respuesta = await _dio.get(
-      "${urlApi}reportes/ajustadorAsignado?id_ajustador=idAjustador",
+      "${urlApi}reportes/ajustadorAsignado?id_ajustador=$idAjustador",
       options: Options(
         headers: {
           'Content-Type': 'application/json',
