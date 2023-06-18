@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 class ReportsAjustador extends StatefulWidget {
   String token;
   int idAjustador;
-  ReportsAjustador({required this.token, this.idAjustador = 0});
+  ReportsAjustador({required this.token, required this.idAjustador});
 
   static const routeName = 'historyReports';
   _ReportsAjustador createState() => _ReportsAjustador();

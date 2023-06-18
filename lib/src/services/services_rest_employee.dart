@@ -60,4 +60,23 @@ class ServicesRestEmpleado {
 
     return respuesta.statusCode!;
   }
+
+  Future<Empleado> obtenerEmpleadoByUsername(
+      String username, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}empleado/username?username=$username",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return Empleado.fromJson(respuesta.data);
+    } else {
+      throw Exception("No se pudo recuperar el empleado");
+    }
+  }
 }
