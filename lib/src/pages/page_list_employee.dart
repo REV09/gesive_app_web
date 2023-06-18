@@ -38,6 +38,20 @@ class _ListEmployeePage extends State<ListEmployeePage> {
       fontSize: responsive.hp(2.4),
     );
 
+    ButtonStyle goBackButtonStyle = ElevatedButton.styleFrom(
+      padding: const EdgeInsets.all(10),
+      shape: const CircleBorder(),
+      backgroundColor: Colors.black45,
+      minimumSize: Size(
+        responsive.wp(5),
+        responsive.hp(5),
+      ),
+      maximumSize: Size(
+        responsive.wp(30),
+        responsive.wp(30),
+      ),
+    );
+
     return Scaffold(
       body: Container(
         width: responsive.getWidth(),
@@ -53,6 +67,15 @@ class _ListEmployeePage extends State<ListEmployeePage> {
           children: <Widget>[
             SizedBox(
               height: responsive.hp(5),
+            ),
+            Container(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: goBackButtonStyle,
+                child: const Icon(Icons.arrow_back),
+              ),
             ),
             Text(
               titlePage,

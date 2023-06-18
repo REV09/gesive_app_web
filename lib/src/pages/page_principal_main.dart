@@ -48,6 +48,9 @@ class _PrincipalMain extends State<PrincipalMain> {
         ),
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: responsive.hp(1),
+            ),
             Container(
               child: ElevatedButton(
                 onPressed: () {
@@ -59,35 +62,64 @@ class _PrincipalMain extends State<PrincipalMain> {
                 child: const Icon(Icons.arrow_back),
               ),
             ),
-            _sessionView()
+            SizedBox(
+              height: responsive.hp(3),
+            ),
+            _sessionView(context, responsive)
           ],
         ),
       ),
     );
   }
 
-  Widget _sessionView() {
+  Widget _sessionView(BuildContext context, Responsive responsive) {
+    ButtonStyle styleOptions = ElevatedButton.styleFrom(
+      backgroundColor: Colors.teal.shade900,
+      fixedSize: Size(
+        responsive.wp(23),
+        responsive.hp(8),
+      ),
+    );
+
+    TextStyle textOptionButton = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.hp(2.5),
+    );
+
     late Column options;
     if (widget.sesion == "Conductor") {
       options = Column(
         children: <Widget>[
           ElevatedButton(
             onPressed: () {},
-            child: const Text("Polizas de seguro"),
+            style: styleOptions,
+            child: Text(
+              "Polizas de seguro",
+              style: textOptionButton,
+            ),
           ),
-          const SizedBox(
-            height: 50,
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Levantar reporte"),
-          ),
-          const SizedBox(
-            height: 50,
+          SizedBox(
+            height: responsive.hp(10),
           ),
           ElevatedButton(
             onPressed: () {},
-            child: const Text("Historial de reportes"),
+            style: styleOptions,
+            child: Text(
+              "Levantar reporte",
+              style: textOptionButton,
+            ),
+          ),
+          SizedBox(
+            height: responsive.hp(10),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            style: styleOptions,
+            child: Text(
+              "Historial de reportes",
+              style: textOptionButton,
+            ),
           )
         ],
       );
@@ -95,9 +127,16 @@ class _PrincipalMain extends State<PrincipalMain> {
       if (widget.sesion == "Ajustador") {
         options = Column(
           children: <Widget>[
+            SizedBox(
+              height: responsive.hp(10),
+            ),
             ElevatedButton(
               onPressed: () {},
-              child: const Text("Reportes"),
+              style: styleOptions,
+              child: Text(
+                "Reportes",
+                style: textOptionButton,
+              ),
             )
           ],
         );
@@ -110,14 +149,20 @@ class _PrincipalMain extends State<PrincipalMain> {
                   MaterialPageRoute(
                     builder: (context) => HistoryReportsPage(
                       token: widget.token,
+                      sesion: widget.sesion,
+                      user: widget.user,
                     ),
                   ),
                 );
               },
-              child: const Text("Reportes"),
+              style: styleOptions,
+              child: Text(
+                "Reportes",
+                style: textOptionButton,
+              ),
             ),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: responsive.hp(10),
             ),
             ElevatedButton(
               onPressed: () {
@@ -129,7 +174,11 @@ class _PrincipalMain extends State<PrincipalMain> {
                   ),
                 );
               },
-              child: const Text("Empleados"),
+              style: styleOptions,
+              child: Text(
+                "Empleados",
+                style: textOptionButton,
+              ),
             )
           ],
         );

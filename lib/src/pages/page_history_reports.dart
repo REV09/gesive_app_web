@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/reporte_class.dart';
+import 'package:gesive_web_app/src/pages/page_principal_main.dart';
 import 'package:gesive_web_app/src/services/services_rest_report.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/card_report_content.dart';
@@ -8,7 +9,10 @@ import 'package:logger/logger.dart';
 
 class HistoryReportsPage extends StatefulWidget {
   String token;
-  HistoryReportsPage({required this.token});
+  String sesion;
+  String user;
+  HistoryReportsPage(
+      {required this.token, required this.sesion, required this.user});
 
   static const routeName = 'historyReports';
   _HistoryReportsPage createState() => _HistoryReportsPage();
@@ -24,6 +28,20 @@ class _HistoryReportsPage extends State<HistoryReportsPage> {
     Responsive responsive = Responsive(context);
     TextStyle titlePageStyle =
         TextStyle(fontSize: responsive.dp(2), color: Colors.white);
+
+    ButtonStyle goBackButtonStyle = ElevatedButton.styleFrom(
+      padding: const EdgeInsets.all(10),
+      shape: const CircleBorder(),
+      backgroundColor: Colors.black45,
+      minimumSize: Size(
+        responsive.wp(5),
+        responsive.hp(5),
+      ),
+      maximumSize: Size(
+        responsive.wp(30),
+        responsive.wp(30),
+      ),
+    );
 
     return Scaffold(
       body: Container(
@@ -42,6 +60,15 @@ class _HistoryReportsPage extends State<HistoryReportsPage> {
               SizedBox(
                 height: responsive.hp(5),
               ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: goBackButtonStyle,
+                  child: const Icon(Icons.arrow_back),
+                ),
+              ),
               Text(
                 titlePage,
                 textAlign: TextAlign.center,
@@ -52,7 +79,7 @@ class _HistoryReportsPage extends State<HistoryReportsPage> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: servicesRestReporte.obtenerReportes(),
+                  future: servicesRestReporte.obtenerReportes(widget.token),
                   builder: ((context, snapshot) {
                     return ListView.builder(
                       itemCount: snapshot.data?.length,

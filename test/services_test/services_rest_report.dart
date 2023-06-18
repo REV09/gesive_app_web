@@ -3,8 +3,9 @@ import 'package:gesive_web_app/src/services/services_rest_report.dart';
 
 void main() {
   test('Prueba de obtener reportes', () async {
+    String token = "";
     ServicesRestReporte servicesRestReporte = ServicesRestReporte();
-    var reportes = await servicesRestReporte.obtenerReportes();
+    var reportes = await servicesRestReporte.obtenerReportes(token);
     expect(reportes.length, 1);
   });
 

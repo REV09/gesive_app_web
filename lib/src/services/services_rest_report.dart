@@ -21,11 +21,14 @@ class ServicesRestReporte {
     return convertido.map<Reporte>((json) => Reporte.fromJson(json)).toList();
   }
 
-  Future<List<Reporte>> obtenerReportes() async {
+  Future<List<Reporte>> obtenerReportes(String token) async {
     final respuesta = await _dio.get(
       "${urlApi}reportes",
       options: Options(
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
       ),
     );
 
@@ -38,14 +41,16 @@ class ServicesRestReporte {
 
   Future<List<Reporte>> reportesAjustador(String username, String token) {
     ServicesRestEmpleado sre = ServicesRestEmpleado();
-    Empleado empleado = sre.obtenerEmpleadoByUsername(username, token) as Empleado;
+    Empleado empleado =
+        sre.obtenerEmpleadoByUsername(username, token) as Empleado;
 
-    Future<List<Reporte>> reportes = obtenerReportesAjustador(empleado.idEmpleado, token);
+    Future<List<Reporte>> reportes =
+        obtenerReportesAjustador(empleado.idEmpleado, token);
     return reportes;
   }
 
-
-  Future<List<Reporte>> obtenerReportesAjustador(int idAjustador, String token) async {
+  Future<List<Reporte>> obtenerReportesAjustador(
+      int idAjustador, String token) async {
     final respuesta = await _dio.get(
       "${urlApi}reportes/ajustadorAsignado?id_ajustador=$idAjustador",
       options: Options(

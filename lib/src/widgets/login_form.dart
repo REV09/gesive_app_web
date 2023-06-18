@@ -39,8 +39,11 @@ class _LoginFormState extends State<LoginForm> {
             await ProgressDialog.dismiss(context);
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) =>
-                      PrincipalMain(token: token, sesion: "Conductor", user: conductor.getTelefono(),)),
+                  builder: (context) => PrincipalMain(
+                        token: token,
+                        sesion: "Conductor",
+                        user: conductor.getTelefono(),
+                      )),
             );
           } else {
             _errorInicioSesion();
@@ -56,8 +59,12 @@ class _LoginFormState extends State<LoginForm> {
                 await _servicesRestAuthentication.validarTokenEmpleado(token);
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) =>
-                      PrincipalMain(token: token, sesion: empleado.getCargo(), user: empleado.getNombreUsuario(),)),
+                builder: (context) => PrincipalMain(
+                  token: token,
+                  sesion: empleado.getCargo(),
+                  user: empleado.getNombreUsuario(),
+                ),
+              ),
             );
           } else {
             _errorInicioSesion();
