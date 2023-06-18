@@ -8,9 +8,9 @@ import '../utils/responsive.dart';
 class PrincipalMain extends StatefulWidget {
   String token;
   String sesion;
-  int idEmpleado;
+  String user;
   PrincipalMain(
-      {required this.token, required this.sesion, required this.idEmpleado});
+      {required this.token, required this.sesion, required this.user});
 
   static const routeName = "principalMain";
   _PrincipalMain createState() => _PrincipalMain();
