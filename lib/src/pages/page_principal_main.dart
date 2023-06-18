@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
 import 'package:gesive_web_app/src/pages/page_list_employee.dart';
 import 'package:gesive_web_app/src/pages/page_login.dart';
+import 'package:gesive_web_app/src/pages/page_register_vehicle.dart';
 
 import '../utils/responsive.dart';
 
@@ -9,10 +10,14 @@ class PrincipalMain extends StatefulWidget {
   String token;
   String sesion;
   String user;
-  PrincipalMain(
-      {required this.token, required this.sesion, required this.user});
+  PrincipalMain({
+    required this.token,
+    required this.sesion,
+    required this.user,
+  });
 
   static const routeName = "principalMain";
+  @override
   _PrincipalMain createState() => _PrincipalMain();
 }
 
@@ -118,6 +123,27 @@ class _PrincipalMain extends State<PrincipalMain> {
             style: styleOptions,
             child: Text(
               "Historial de reportes",
+              style: textOptionButton,
+            ),
+          ),
+          SizedBox(
+            height: responsive.hp(10),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => RegisterVehiclePage(
+                    token: widget.token,
+                    sesion: widget.sesion,
+                    user: widget.user,
+                  ),
+                ),
+              );
+            },
+            style: styleOptions,
+            child: Text(
+              "Registrar vehiculo",
               style: textOptionButton,
             ),
           )

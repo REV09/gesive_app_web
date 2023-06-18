@@ -96,9 +96,10 @@ class _RegisterFormState extends State<RegisterForm> {
         fontSize: responsive.hp(2.1));
 
     TextStyle loginButton = TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: responsive.hp(2.4));
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.hp(2.4),
+    );
 
     BoxDecoration decorationPassword = const BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.black38)));
