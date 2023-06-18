@@ -18,7 +18,7 @@ class _FormReportPage extends State<FormReportPage> {
 
     const String title = "Registrar nuevo empleado";
     final TextStyle textLoginStyle =
-    TextStyle(fontSize: responsive.dp(2), color: Colors.white);
+        TextStyle(fontSize: responsive.dp(2), color: Colors.white);
 
     ButtonStyle goBackButtonStyle = ElevatedButton.styleFrom(
       padding: const EdgeInsets.all(10),
@@ -92,5 +92,4 @@ class _FormReportPage extends State<FormReportPage> {
       ),
     );
   }
-
 }

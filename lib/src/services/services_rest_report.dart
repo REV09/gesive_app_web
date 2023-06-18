@@ -33,4 +33,23 @@ class ServicesRestReporte {
       throw Exception("No se pudieron recuperar los reportes");
     }
   }
+
+  Future<List<Reporte>> obtenerReportesAjustador(
+      int idAjustador, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}reportes/ajustadorAsignado?id_ajustador=idAjustador",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return (respuesta.data as List).map((e) => Reporte.fromJson(e)).toList();
+    } else {
+      throw Exception("No se pudieron recuperar los reportes");
+    }
+  }
 }
