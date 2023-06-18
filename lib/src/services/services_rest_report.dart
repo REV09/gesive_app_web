@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:gesive_web_app/src/classes/reporte_class.dart';
 import 'package:gesive_web_app/src/services/api_configuraciones.dart';
 import 'package:logger/logger.dart';
+import 'package:gesive_web_app/src/services/services_rest_employee.dart';
+import 'package:gesive_web_app/src/classes/empleado_class.dart';
 
 class ServicesRestReporte {
   final Dio _dio = Dio();
@@ -34,8 +36,16 @@ class ServicesRestReporte {
     }
   }
 
-  Future<List<Reporte>> obtenerReportesAjustador(
-      int idAjustador, String token) async {
+  Future<List<Reporte>> reportesAjustador(String username, String token) {
+    ServicesRestEmpleado sre = ServicesRestEmpleado();
+    Empleado empleado = sre.obtenerEmpleadoByUsername(username, token) as Empleado;
+
+    Future<List<Reporte>> reportes = obtenerReportesAjustador(empleado.idEmpleado, token);
+    return reportes;
+  }
+
+
+  Future<List<Reporte>> obtenerReportesAjustador(int idAjustador, String token) async {
     final respuesta = await _dio.get(
       "${urlApi}reportes/ajustadorAsignado?id_ajustador=$idAjustador",
       options: Options(

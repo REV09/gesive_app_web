@@ -8,8 +8,8 @@ import 'package:logger/logger.dart';
 
 class ReportsAjustador extends StatefulWidget {
   String token;
-  int idAjustador;
-  ReportsAjustador({required this.token, required this.idAjustador});
+  String username;
+  ReportsAjustador({required this.token, required this.username});
 
   static const routeName = 'historyReports';
   _ReportsAjustador createState() => _ReportsAjustador();
@@ -53,8 +53,7 @@ class _ReportsAjustador extends State<ReportsAjustador> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: servicesRestReporte.obtenerReportesAjustador(
-                      widget.idAjustador, widget.token),
+                  future: servicesRestReporte.reportesAjustador(widget.username, widget.token),
                   builder: ((context, snapshot) {
                     return ListView.builder(
                       itemCount: snapshot.data?.length,
