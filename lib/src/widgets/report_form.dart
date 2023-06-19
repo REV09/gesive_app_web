@@ -16,7 +16,7 @@ class ReportForm extends StatefulWidget {
 }
 
 class _ReportFormState extends State<ReportForm> {
-  GlobalKey<FormState> _formKey = GlobalKey(); //?
+  GlobalKey<FormState> _formKey = GlobalKey();
   final ServicesRestReporte _servicesRestReporte = ServicesRestReporte();
   String labelInputPolicy = "Póliza";
   String labelInputInvolvedNames = "Nombres de involucrados";
@@ -84,7 +84,16 @@ class _ReportFormState extends State<ReportForm> {
     return Positioned(
       bottom: 30,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: responsive.wp(65),
+          minWidth: responsive.wp(50),
+        ),
+        child: Form(
+          key: _formKey,
+          child: Column(
 
+          ),
+        ),
       ),
     );
   }

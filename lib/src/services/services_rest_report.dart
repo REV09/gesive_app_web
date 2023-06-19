@@ -67,4 +67,61 @@ class ServicesRestReporte {
       throw Exception("No se pudieron recuperar los reportes");
     }
   }
+
+  Future<int> subirFoto(String foto, int idReporte, String token) async {
+    final respuesta = await _dio.post(
+      "${urlApi}fotos?id_reporte=$idReporte",
+      options: Options(
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+      data: {
+        "archivo": foto,
+      },
+    );
+
+    _logger.i(respuesta.statusCode);
+
+    int codigoRespuesta = respuesta.statusCode!;
+    return codigoRespuesta;
+  }
+
+  Future<int> registrarReporte(Reporte reporte, List<String> fotos, String token) async {
+
+    for(String foto in fotos) {
+      subirFoto(foto, reporte.getIdReporte(), token);
+    }
+
+    final respuesta = await _dio.post(
+      "${urlApi}reporte",
+      options: Options(
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+      data: {
+        "idReporte": reporte.getIdReporte(),
+        "idPoliza": reporte.getIdPoliza(),
+        "posicionLat": reporte.getPosicionLat(),
+        "posicionLon": reporte.getPosicionLon(),
+        "involucradosNombres": reporte.getInvolucradosNombres(),
+        "involucradosVehiculos": reporte.getInvolucradosVehiculos(),
+        "fotos": reporte.getFotos(),
+        "idAjustador": reporte.getIdAjustador(),
+        "estatus": reporte.getEstatus(),
+        "dictamenTexto": reporte.getDictamenTexto(),
+        "dictamenFecha": reporte.getDictamenFecha(),
+        "dictamenHora": reporte.getDictamenHora(),
+        "dictamenFolio": reporte.getDictamenFolio()
+      },
+    );
+
+    _logger.i(respuesta.statusCode);
+
+    int codigoRespuesta = respuesta.statusCode!;
+    return codigoRespuesta;
+  }
 }

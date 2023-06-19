@@ -34,4 +34,19 @@ class ServicesRestPoliza {
       throw Exception("No se pudieron recuperar las polizas");
     }
   }
+
+  Future<List<Poliza>> obtenerPolizasUsuario(int id) async {
+    final respuesta = await _dio.get(
+      "${urlApi}polizas/usuario?id_conductor=$id",
+      options: Options(
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return (respuesta.data as List).map((e) => Poliza.fromJson(e)).toList();
+    } else {
+      throw Exception("No se pudieron recuperar las polizas");
+    }
+  }
 }

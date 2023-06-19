@@ -32,4 +32,22 @@ class ServicesRestVehicle {
     int codigoRespuesta = respuesta.statusCode!;
     return codigoRespuesta;
   }
+
+  Future<Vehiculo> obtenerVehiculo(int id, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}vehiculo?id_vehiculo=$id",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return Vehiculo.fromJson(respuesta.data);
+    } else {
+      throw Exception("No se pudo recuperar el empleado");
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/services_rest_employee.dart';
 import '../utils/responsive.dart';
+import '../widgets/report_form.dart';
 
 class FormReportPage extends StatefulWidget {
   static const routename = "formReport";
@@ -16,7 +17,7 @@ class _FormReportPage extends State<FormReportPage> {
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
 
-    const String title = "Registrar nuevo empleado";
+    const String title = "Registrar siniestro";
     final TextStyle textLoginStyle =
         TextStyle(fontSize: responsive.dp(2), color: Colors.white);
 
@@ -83,7 +84,7 @@ class _FormReportPage extends State<FormReportPage> {
                   SizedBox(
                     height: responsive.dp(5),
                   ),
-                  //ReporteForm(), *********************************************
+                  ReportForm(),
                 ],
               ),
             ),

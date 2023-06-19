@@ -21,7 +21,7 @@ class EmployeeForm extends StatefulWidget {
 }
 
 class _EmployeeFormState extends State<EmployeeForm> {
-  GlobalKey<FormState> _formKey = GlobalKey(); //?
+  GlobalKey<FormState> _formKey = GlobalKey();
   final ServicesRestEmpleado _servicesRestEmpleado = ServicesRestEmpleado();
   String labelInputFullName = "Nombre completo";
   String labelInputJoinDate = "Fecha de ingreso";
@@ -50,7 +50,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
             cargo: cargo_global!,
             nombreUsuario: _nombreUsuario!,
             contrasena: _contrasena!);
-        //empleado.setIdEmpleado(42); //??
         int statusResponse = await _servicesRestEmpleado.registrarEmpleado(
             empleado, widget.token);
         ProgressDialog.dismiss(context);
@@ -276,19 +275,21 @@ class _DropdownCargosState extends State<DropdownCargos> {
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
     return Theme(
-        data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
-        child: DropdownButton(
-            isExpanded: true,
-            value: dropdownValue,
-            style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
-            items: cargos.values
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (String? value) {
-              setState(() {
-                dropdownValue = value!;
-                cargo_global = value;
-              });
-            }));
+      data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
+      child: DropdownButton(
+        isExpanded: true,
+        value: dropdownValue,
+        style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
+        items: cargos.values
+            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+            .toList(),
+        onChanged: (String? value) {
+          setState(() {
+            dropdownValue = value!;
+            cargo_global = value;
+          });
+        }
+      )
+    );
   }
 }
