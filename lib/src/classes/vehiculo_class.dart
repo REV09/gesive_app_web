@@ -6,6 +6,7 @@ class Vehiculo {
   String modelo;
   String color;
   String numPlacas;
+  int idConductor;
 
   Vehiculo({
     this.idvehiculo = 0,
@@ -15,6 +16,7 @@ class Vehiculo {
     required this.modelo,
     required this.color,
     required this.numPlacas,
+    required this.idConductor,
   });
 
   void setIdVehiculo(int id) {
@@ -45,6 +47,10 @@ class Vehiculo {
     this.numPlacas = numPlacas;
   }
 
+  void setIdConductor(int id) {
+    idConductor = id;
+  }
+
   int getIdVehiculo() => idvehiculo;
   String getNumeroSerie() => numeroSerie;
   int getAnio() => anio;
@@ -52,6 +58,7 @@ class Vehiculo {
   String getModelo() => modelo;
   String getColor() => color;
   String getNumPlacas() => numPlacas;
+  int getIdConductor() => idConductor;
 
   factory Vehiculo.fromJson(Map<String, dynamic> json) => Vehiculo(
         idvehiculo: json["idvehiculo"],
@@ -61,6 +68,7 @@ class Vehiculo {
         modelo: json["modelo"],
         color: json["color"],
         numPlacas: json["numPlacas"],
+        idConductor: json["idConductor"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,5 +79,6 @@ class Vehiculo {
         "modelo": modelo,
         "color": color,
         "numPlacas": numPlacas,
+        "idConductor": idConductor,
       };
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/classes/conductor_clase.dart';
 import 'package:gesive_web_app/src/classes/vehiculo_class.dart';
+import 'package:gesive_web_app/src/services/services_rest_authentication.dart';
 import 'package:gesive_web_app/src/services/services_rest_vehicle.dart';
 
 import '../utils/dialogs.dart';
@@ -18,6 +20,8 @@ class RegisterVehicleForm extends StatefulWidget {
 class _RegisterVehicleForm extends State<RegisterVehicleForm> {
   GlobalKey<FormState> _formKey = GlobalKey();
   ServicesRestVehicle _servicesRestVehicle = ServicesRestVehicle();
+  ServicesRestAuthentication _servicesRestAuthentication =
+      ServicesRestAuthentication();
   String labelInputSerialNumber = "Numero de serie del vehiculo";
   String labelInputYear = "Año del vehiculo";
   String labelInputBrand = "Marca del vehiculo";
@@ -35,6 +39,8 @@ class _RegisterVehicleForm extends State<RegisterVehicleForm> {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null && isOk) {
       ProgressDialog.show(context);
+      Conductor conductor =
+          await _servicesRestAuthentication.validarTokenConductor(widget.token);
       Vehiculo vehiculo = Vehiculo(
         numeroSerie: _numeroSerie!,
         anio: int.parse(_anioVehiculo!),
@@ -42,6 +48,7 @@ class _RegisterVehicleForm extends State<RegisterVehicleForm> {
         modelo: _modelo!,
         color: _color!,
         numPlacas: _numeroPlacas!,
+        idConductor: conductor.getIdConductor(),
       );
       int statusResponse =
           await _servicesRestVehicle.registrarVehiculo(vehiculo, widget.token);
