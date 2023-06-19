@@ -67,7 +67,7 @@ class _RegisterVehicleForm extends State<RegisterVehicleForm> {
             TextButton(
               onPressed: () => {
                 Navigator.of(context).pop(),
-                ProgressDialog.dismiss(context),
+                Navigator.of(context).pop(),
                 Navigator.of(context).pop(),
               },
               child: const Text("Aceptar"),
@@ -188,7 +188,8 @@ class _RegisterVehicleForm extends State<RegisterVehicleForm> {
                   _modelo = text;
                 },
                 validator: (text) {
-                  if (!modelVehicleValidator.hasMatch(text!)) {
+                  if (!modelVehicleValidator.hasMatch(text!) &&
+                      !alfanumericExpression.hasMatch(text)) {
                     return "Modelo no valido"
                         "\nIngrese solo letras, numeros y guiones";
                   }
@@ -222,7 +223,8 @@ class _RegisterVehicleForm extends State<RegisterVehicleForm> {
                   _numeroPlacas = text;
                 },
                 validator: (text) {
-                  if (!licensePlatesValidator.hasMatch(text!)) {
+                  if (!licensePlatesValidator.hasMatch(text!) &&
+                      !alfanumericExpression.hasMatch(text)) {
                     return "Numero de placas no valido"
                         "\nIngrese solo letras, numeros y guiones";
                   }
