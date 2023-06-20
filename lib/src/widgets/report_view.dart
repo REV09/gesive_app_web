@@ -54,22 +54,10 @@ class _ReportViewState extends State<ReportView> {
       if (isOk) {
         _reporte = widget.reporte;
         ProgressDialog.show(context);
-        Reporte reporte = Reporte(
-          idReporte: 100,
-          idPoliza: _reporte!.idPoliza,
-          posicionLat: _reporte!.posicionLat,
-          posicionLon: _reporte!.posicionLon,
-          involucradosNombres: _reporte!.involucradosNombres,
-          involucradosVehiculos: _reporte!.involucradosVehiculos,
-          fotos: _reporte!.fotos,
-          idAjustador: 420, // Hay que buscar ajustador con username
-          estatus: "dictaminado",
-          dictamenTexto: _dictamen!,
-          dictamenFecha: DateTime.now(),
-          dictamenHora: "",
-          dictamenFolio: "",);
+        _reporte!.dictamenFolio = "F${DateTime.now().millisecondsSinceEpoch}";
+        _reporte!.dictamenTexto = _dictamen!;
         int statusResponse =
-          await _servicesRestReporte.registrarReporte(reporte, _fotos, widget.token);
+          await _servicesRestReporte.actualizarReporte(_reporte!, widget.token);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
         Navigator.pushNamed(context, HistoryReportsPage.routeName);
@@ -130,16 +118,7 @@ class _ReportViewState extends State<ReportView> {
               SizedBox(
                 height: responsive.hp(2),
               ),
-              ElevatedButton(
-                onPressed: () => {
-                  _abrirArchivos()
-                },
-                style: styleLoginButton,
-                child: Text(
-                  "Seleccionar fotos...",
-                  style: loginButton,
-                ),
-              ),
+              
               SizedBox(
                 height: responsive.hp(2),
               ),
@@ -163,7 +142,7 @@ class _ReportViewState extends State<ReportView> {
               ),
               ElevatedButton(
                 onPressed: () => {
-                  _registrarReporte(),
+                  _dictaminar(),
                 },
                 style: styleLoginButton,
                 child: Text(
