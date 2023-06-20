@@ -115,7 +115,7 @@ class _ReportViewState extends State<ReportView> {
           child: Column(
             children: <Widget>[
               Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              Text(getConductor().nombreCompleto, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
+              Text(getConductor().nombreCompleto + ", " + getPoliza().tipoCobertura, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               
               SizedBox(
                 height: responsive.hp(10),
