@@ -20,11 +20,13 @@ class ServicesRestPoliza {
     return convertido.map<Reporte>((json) => Reporte.fromJson(json)).toList();
   }*/
 
-  Future<List<Poliza>> obtenerPolizas() async {
+  Future<List<Poliza>> obtenerPolizas(String token) async {
     final respuesta = await _dio.get(
       "${urlApi}polizas",
       options: Options(
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',
+                  'Authorization': "Bearer $token"
+                  },
       ),
     );
 
@@ -35,11 +37,13 @@ class ServicesRestPoliza {
     }
   }
 
-  Future<List<Poliza>> obtenerPolizasUsuario(int id) async {
+  Future<List<Poliza>> obtenerPolizasUsuario(int id, String token) async {
     final respuesta = await _dio.get(
       "${urlApi}polizas/usuario?id_conductor=$id",
       options: Options(
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',
+                  'Authorization': "Bearer $token"
+                  },
       ),
     );
 
@@ -47,6 +51,23 @@ class ServicesRestPoliza {
       return (respuesta.data as List).map((e) => Poliza.fromJson(e)).toList();
     } else {
       throw Exception("No se pudieron recuperar las polizas");
+    }
+  }
+
+  Future<Poliza> obtenerPoliza(int idPoliza, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}poliza?id_poliza=$idPoliza",
+      options: Options(
+        headers: {'Content-Type': 'application/json',
+                  'Authorization': "Bearer $token"
+                  },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return Poliza.fromJson(respuesta.data);
+    } else {
+      throw Exception("No se pudo recuperar la poliza");
     }
   }
 }
