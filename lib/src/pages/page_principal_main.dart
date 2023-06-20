@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/pages/page_form_report.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
 import 'package:gesive_web_app/src/pages/page_list_employee.dart';
+import 'package:gesive_web_app/src/pages/page_list_insurance_policy.dart';
 import 'package:gesive_web_app/src/pages/page_login.dart';
 import 'package:gesive_web_app/src/pages/page_register_vehicle.dart';
+import 'package:gesive_web_app/src/pages/page_reports_ajustador.dart';
 
 import '../utils/responsive.dart';
 
@@ -98,7 +100,17 @@ class _PrincipalMain extends State<PrincipalMain> {
       options = Column(
         children: <Widget>[
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => InsurancePolicyPage(
+                    token: widget.token,
+                    sesion: widget.sesion,
+                    user: widget.user,
+                  ),
+                ),
+              );
+            },
             style: styleOptions,
             child: Text(
               "Polizas de seguro",
@@ -167,7 +179,16 @@ class _PrincipalMain extends State<PrincipalMain> {
               height: responsive.hp(10),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ReportsAjustador(
+                      token: widget.token,
+                      username: widget.user,
+                    ),
+                  ),
+                );
+              },
               style: styleOptions,
               child: Text(
                 "Reportes",
