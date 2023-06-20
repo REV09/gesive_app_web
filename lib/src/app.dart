@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/pages/page_form_employee.dart';
+import 'package:gesive_web_app/src/pages/page_form_report.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
 import 'package:gesive_web_app/src/pages/page_list_employee.dart';
 import 'package:gesive_web_app/src/pages/page_login.dart';

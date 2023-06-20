@@ -9,7 +9,7 @@ import 'package:gesive_web_app/src/widgets/input_text.dart';
 import 'package:intl/intl.dart';
 
 import '../classes/empleado_class.dart';
-import '../utils/cargos.dart';
+import '../utils/globals.dart';
 
 class EmployeeForm extends StatefulWidget {
   String token;

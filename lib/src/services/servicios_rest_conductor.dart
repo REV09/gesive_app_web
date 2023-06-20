@@ -47,4 +47,23 @@ class ServiceRestConductor {
 
     return respuesta.statusCode!;
   }
+
+  Future<Conductor> obtenerConductorByPhone(
+      String telefono, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}conductor/telefono?numero_telefono=$telefono",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return Conductor.fromJson(respuesta.data);
+    } else {
+      throw Exception("No se pudo recuperar el conductor");
+    }
+  }
 }

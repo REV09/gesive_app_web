@@ -38,6 +38,8 @@ dependencies:
   dio: ^5.1.2
   logger: ^1.3.0
   intl: ^0.18.1
+  file_picker: any
+  geolocator: any
 
 dev_dependencies:
   flutter_test:

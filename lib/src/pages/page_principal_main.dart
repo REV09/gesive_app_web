@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/pages/page_form_report.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
 import 'package:gesive_web_app/src/pages/page_list_employee.dart';
 import 'package:gesive_web_app/src/pages/page_login.dart';
@@ -108,7 +109,9 @@ class _PrincipalMain extends State<PrincipalMain> {
             height: responsive.hp(10),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, FormReportPage.routename);
+            },
             style: styleOptions,
             child: Text(
               "Levantar reporte",

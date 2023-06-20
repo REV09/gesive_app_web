@@ -82,16 +82,19 @@ class ServicesRestReporte {
       },
     );
 
-    _logger.i(respuesta.statusCode);
-
-    int codigoRespuesta = respuesta.statusCode!;
-    return codigoRespuesta;
+    if (respuesta.statusCode == 200) {
+      return respuesta.data;
+    } else {
+      throw Exception("No se pudo guardar la foto");
+    }
   }
 
   Future<int> registrarReporte(Reporte reporte, List<String> fotos, String token) async {
 
+    String fotosId = "";
+
     for(String foto in fotos) {
-      subirFoto(foto, reporte.getIdReporte(), token);
+      fotosId += "${subirFoto(foto, reporte.getIdReporte(), token)}-";
     }
 
     final respuesta = await _dio.post(
@@ -109,7 +112,7 @@ class ServicesRestReporte {
         "posicionLon": reporte.getPosicionLon(),
         "involucradosNombres": reporte.getInvolucradosNombres(),
         "involucradosVehiculos": reporte.getInvolucradosVehiculos(),
-        "fotos": reporte.getFotos(),
+        "fotos": fotosId,
         "idAjustador": reporte.getIdAjustador(),
         "estatus": reporte.getEstatus(),
         "dictamenTexto": reporte.getDictamenTexto(),

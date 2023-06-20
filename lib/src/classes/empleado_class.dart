@@ -1,4 +1,4 @@
-import 'package:gesive_web_app/src/utils/cargos.dart';
+import 'package:gesive_web_app/src/utils/globals.dart';
 
 class Empleado {
   int idEmpleado;

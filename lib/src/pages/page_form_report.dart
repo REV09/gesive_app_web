@@ -5,6 +5,10 @@ import '../utils/responsive.dart';
 import '../widgets/report_form.dart';
 
 class FormReportPage extends StatefulWidget {
+  String token;
+  String username;
+  FormReportPage({required this.token, required this.username});
+
   static const routename = "formReport";
   _FormReportPage createState() => _FormReportPage();
 }
@@ -84,7 +88,7 @@ class _FormReportPage extends State<FormReportPage> {
                   SizedBox(
                     height: responsive.dp(5),
                   ),
-                  ReportForm(),
+                  ReportForm(token: widget.token, username: widget.username,),
                 ],
               ),
             ),
