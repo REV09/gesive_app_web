@@ -16,8 +16,8 @@ class ReportView extends StatefulWidget {
   String token;
   String username;
   Reporte reporte;
-  ReportView({required this.token, required this.username, required this.reporte});
-
+  ReportView(
+      {required this.token, required this.username, required this.reporte});
 
   @override
   _ReportViewState createState() => _ReportViewState();
@@ -37,6 +37,8 @@ class _ReportViewState extends State<ReportView> {
   String? _dictamenFolio;
   List<String> _fotos = List<String>.empty(growable: true);
   Reporte? _reporte;
+  Conductor? _conductor;
+  Poliza? _poliza;
 
   _dictaminar() async {
     final isOk = _formKey.currentState?.validate();
@@ -45,8 +47,8 @@ class _ReportViewState extends State<ReportView> {
         ProgressDialog.show(context);
         _reporte!.dictamenFolio = "F${DateTime.now().millisecondsSinceEpoch}";
         _reporte!.dictamenTexto = _dictamen!;
-        int statusResponse =
-          await _servicesRestReporte.actualizarReporte(_reporte!, widget.token);
+        int statusResponse = await _servicesRestReporte.actualizarReporte(
+            _reporte!, widget.token);
         ProgressDialog.dismiss(context);
         Navigator.of(context).pop();
         Navigator.pushNamed(context, HistoryReportsPage.routeName);
@@ -54,16 +56,19 @@ class _ReportViewState extends State<ReportView> {
     }
   }
 
-  getConductor() async {
+  Future<Conductor> getConductor() async {
     Poliza poliza = await getPoliza();
     ServiceRestConductor servicesRestConductor = ServiceRestConductor();
-    Conductor conductor = await servicesRestConductor.obtenerConductorByID(poliza.idConductor, widget.token);
+    Conductor conductor = await servicesRestConductor.obtenerConductorByID(
+        poliza.idConductor, widget.token);
+    _poliza = poliza;
     return conductor;
   }
 
-  getPoliza() async {
+  Future<Poliza> getPoliza() async {
     ServicesRestPoliza servicesRestPoliza = ServicesRestPoliza();
-    Poliza poliza = await servicesRestPoliza.obtenerPoliza(widget.reporte.idPoliza, widget.token);
+    Poliza poliza = await servicesRestPoliza.obtenerPoliza(
+        widget.reporte.idPoliza, widget.token);
     return poliza;
   }
 
@@ -106,65 +111,94 @@ class _ReportViewState extends State<ReportView> {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              Text(getConductor().nombreCompleto + ", " + getPoliza().tipoCobertura, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-              Text("$labelInputInvolvedNames: ${_reporte!.getInvolucradosNombres()}", style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-              Text("$labelInputInvolvedVehicles: ${_reporte!.getInvolucradosVehiculos()}", style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-              Text(labelInputPhotos, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              SizedBox(
-                height: responsive.hp(2),
-              ),
-              SizedBox(
-                height: responsive.hp(2),
-              ),
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-              InputText(
-                keyboardType: TextInputType.name,
-                label: labelInputDictamen,
-                fontSize: responsive.hp(2.5),
-                onChanged: (text) {
-                  _dictamen = text;
-                },
-                validator: (text) {
-                  if (!alfanumericExpression.hasMatch(text!)) {
-                    return "No se puede dejar campo vacio";
-                  }
-                  return null;
-                },
-              ),
-              ElevatedButton(
-                onPressed: () => {
-                  _dictaminar(),
-                },
-                style: styleLoginButton,
-                child: Text(
-                  "Registrar siniestro",
-                  style: loginButton,
-                ),
-              ),
-              SizedBox(
-                height: responsive.hp(10),
-              ),
-            ],
+          child: FutureBuilder(
+            future: getConductor(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                _conductor = snapshot.data;
+                return Column(
+                  children: <Widget>[
+                    Text(
+                      labelInputPolicy,
+                      style: TextStyle(
+                          fontSize: responsive.hp(2.4), color: Colors.white),
+                    ),
+                    Text(
+                      "${_conductor!.getNombreCompleto()}, ${_poliza!.getTipoCobertura()}",
+                      style: TextStyle(
+                          fontSize: responsive.hp(2.4), color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(10),
+                    ),
+                    Text(
+                      "$labelInputInvolvedNames: ${_reporte!.getInvolucradosNombres()}",
+                      style: TextStyle(
+                          fontSize: responsive.hp(2.4), color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(10),
+                    ),
+                    Text(
+                      "$labelInputInvolvedVehicles: ${_reporte!.getInvolucradosVehiculos()}",
+                      style: TextStyle(
+                          fontSize: responsive.hp(2.4), color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(10),
+                    ),
+                    Text(
+                      labelInputPhotos,
+                      style: TextStyle(
+                          fontSize: responsive.hp(2.4), color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(2),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(2),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(10),
+                    ),
+                    InputText(
+                      keyboardType: TextInputType.name,
+                      label: labelInputDictamen,
+                      fontSize: responsive.hp(2.5),
+                      onChanged: (text) {
+                        _dictamen = text;
+                      },
+                      validator: (text) {
+                        if (!alfanumericExpression.hasMatch(text!)) {
+                          return "No se puede dejar campo vacio";
+                        }
+                        return null;
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () => {
+                        _dictaminar(),
+                      },
+                      style: styleLoginButton,
+                      child: Text(
+                        "Registrar siniestro",
+                        style: loginButton,
+                      ),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(10),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }),
           ),
         ),
       ),
     );
   }
 }
-
-
