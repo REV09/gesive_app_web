@@ -116,7 +116,40 @@ class ServicesRestReporte {
         "idAjustador": reporte.getIdAjustador(),
         "estatus": reporte.getEstatus(),
         "dictamenTexto": reporte.getDictamenTexto(),
-        "dictamenFecha": reporte.getDictamenFecha(),
+        "dictamenFecha": "${reporte.dictamenFecha.year.toString().padLeft(4, '0')}-${reporte.dictamenFecha.month.toString().padLeft(2, '0')}-${reporte.dictamenFecha.day.toString().padLeft(2, '0')}",
+        "dictamenHora": reporte.getDictamenHora(),
+        "dictamenFolio": reporte.getDictamenFolio()
+      },
+    );
+
+    _logger.i(respuesta.statusCode);
+
+    int codigoRespuesta = respuesta.statusCode!;
+    return codigoRespuesta;
+  }
+
+  Future<int> actualizarReporte(Reporte reporte, String token) async {
+
+    final respuesta = await _dio.put(
+      "${urlApi}reporte",
+      options: Options(
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+      data: {
+        "idReporte": reporte.getIdReporte(),
+        "idPoliza": reporte.getIdPoliza(),
+        "posicionLat": reporte.getPosicionLat(),
+        "posicionLon": reporte.getPosicionLon(),
+        "involucradosNombres": reporte.getInvolucradosNombres(),
+        "involucradosVehiculos": reporte.getInvolucradosVehiculos(),
+        "fotos": reporte.getFotos(),
+        "idAjustador": reporte.getIdAjustador(),
+        "estatus": reporte.getEstatus(),
+        "dictamenTexto": reporte.getDictamenTexto(),
+        "dictamenFecha": "${reporte.dictamenFecha.year.toString().padLeft(4, '0')}-${reporte.dictamenFecha.month.toString().padLeft(2, '0')}-${reporte.dictamenFecha.day.toString().padLeft(2, '0')}",
         "dictamenHora": reporte.getDictamenHora(),
         "dictamenFolio": reporte.getDictamenFolio()
       },

@@ -239,7 +239,7 @@ class _DropdownPolizasState extends State<DropdownPolizas> {
     ServicesRestVehicle _servicesRestVehicle = ServicesRestVehicle();
 
     conductor = await _servicesRestConductor.obtenerConductorByPhone(widget.username, widget.token);
-    polizas = await _servicesRestPoliza.obtenerPolizasUsuario(conductor!.getIdConductor());
+    polizas = await _servicesRestPoliza.obtenerPolizasUsuario(conductor!.getIdConductor(), widget.token);
 
     for(Poliza poliza in polizas) {
       Vehiculo vehiculo = await _servicesRestVehicle.obtenerVehiculo(poliza.idVehiculo, widget.token);
