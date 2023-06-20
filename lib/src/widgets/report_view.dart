@@ -8,7 +8,8 @@ import 'package:gesive_web_app/src/classes/vehiculo_class.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
 import 'package:gesive_web_app/src/services/services_rest_employee.dart';
 import 'package:gesive_web_app/src/services/services_rest_report.dart';
-import 'package:gesive_web_app/src/services/services_rest_report.dart';
+import 'package:gesive_web_app/src/services/services_rest_policy.dart';
+import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
 import 'package:gesive_web_app/src/services/services_rest_vehicle.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
 import 'package:gesive_web_app/src/utils/globals.dart';
@@ -65,6 +66,19 @@ class _ReportViewState extends State<ReportView> {
     }
   }
 
+  getConductor() async {
+    Poliza poliza = await getPoliza();
+    ServiceRestConductor servicesRestConductor = ServiceRestConductor();
+    Conductor conductor = await servicesRestConductor.obtenerConductorByID(poliza.idConductor, widget.token);
+    return conductor;
+  }
+
+  getPoliza() async {
+    ServicesRestPoliza servicesRestPoliza = ServicesRestPoliza();
+    Poliza poliza = await servicesRestPoliza.obtenerPoliza(widget.reporte.idPoliza, widget.token);
+    return poliza;
+  }
+
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
@@ -101,7 +115,7 @@ class _ReportViewState extends State<ReportView> {
           child: Column(
             children: <Widget>[
               Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
+              Text(getConductor().nombreCompleto, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               
               SizedBox(
                 height: responsive.hp(10),

@@ -66,4 +66,22 @@ class ServiceRestConductor {
       throw Exception("No se pudo recuperar el conductor");
     }
   }
+
+  Future<Conductor> obtenerConductorByID(int idConductor, String token) async {
+    final respuesta = await _dio.get(
+      "${urlApi}conductor?id_conductor=$idConductor",
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token"
+        },
+      ),
+    );
+
+    if (respuesta.statusCode == 200) {
+      return Conductor.fromJson(respuesta.data);
+    } else {
+      throw Exception("No se pudo recuperar el conductor");
+    }
+  }
 }
