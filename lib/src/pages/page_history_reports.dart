@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gesive_web_app/src/classes/reporte_class.dart';
 import 'package:gesive_web_app/src/pages/page_principal_main.dart';
+import 'package:gesive_web_app/src/pages/page_report_view.dart';
 import 'package:gesive_web_app/src/services/services_rest_report.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/card_report_content.dart';
@@ -105,7 +106,20 @@ class _HistoryReportsPage extends State<HistoryReportsPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: card,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ReportViewPage(
+                                      token: widget.token,
+                                      username: widget.user,
+                                      reporte: reporte,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: card,
+                            ),
                           );
 
                           return Column(

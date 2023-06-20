@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gesive_web_app/src/widgets/report_view.dart';
 
+import '../classes/reporte_class.dart';
 import '../services/services_rest_employee.dart';
 import '../utils/responsive.dart';
 import '../widgets/report_form.dart';
@@ -7,7 +9,8 @@ import '../widgets/report_form.dart';
 class ReportViewPage extends StatefulWidget {
   String token;
   String username;
-  ReportViewPage({required this.token, required this.username});
+  Reporte reporte;
+  ReportViewPage({required this.token, required this.username, required this.reporte});
 
   static const routename = "formReport";
   _ReportViewPage createState() => _ReportViewPage();
@@ -88,7 +91,7 @@ class _ReportViewPage extends State<ReportViewPage> {
                   SizedBox(
                     height: responsive.dp(5),
                   ),
-                  ReportForm(token: widget.token, username: widget.username,),
+                  ReportView(token: widget.token, username: widget.username, reporte: widget.reporte,),
                 ],
               ),
             ),
