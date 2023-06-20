@@ -53,7 +53,6 @@ class _ReportViewState extends State<ReportView> {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
-        _reporte = widget.reporte;
         ProgressDialog.show(context);
         _reporte!.dictamenFolio = "F${DateTime.now().millisecondsSinceEpoch}";
         _reporte!.dictamenTexto = _dictamen!;
@@ -77,6 +76,12 @@ class _ReportViewState extends State<ReportView> {
     ServicesRestPoliza servicesRestPoliza = ServicesRestPoliza();
     Poliza poliza = await servicesRestPoliza.obtenerPoliza(widget.reporte.idPoliza, widget.token);
     return poliza;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _reporte = widget.reporte;
   }
 
   @override
@@ -120,11 +125,11 @@ class _ReportViewState extends State<ReportView> {
               SizedBox(
                 height: responsive.hp(10),
               ),
-              Text(labelInputInvolvedNames, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
+              Text("$labelInputInvolvedNames: ${_reporte!.getInvolucradosNombres()}", style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               SizedBox(
                 height: responsive.hp(10),
               ),
-              Text(labelInputInvolvedVehicles, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
+              Text("$labelInputInvolvedVehicles: ${_reporte!.getInvolucradosVehiculos()}", style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               SizedBox(
                 height: responsive.hp(10),
               ),
@@ -135,7 +140,6 @@ class _ReportViewState extends State<ReportView> {
               SizedBox(
                 height: responsive.hp(2),
               ),
-              Text("$fileQuantity $labelSelectedPhotos", style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               SizedBox(
                 height: responsive.hp(10),
               ),
