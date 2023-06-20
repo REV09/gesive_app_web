@@ -39,10 +39,10 @@ class ServicesRestReporte {
     }
   }
 
-  Future<List<Reporte>> reportesAjustador(String username, String token) {
+  Future<List<Reporte>> reportesAjustador(String username, String token) async {
     ServicesRestEmpleado sre = ServicesRestEmpleado();
     Empleado empleado =
-        sre.obtenerEmpleadoByUsername(username, token) as Empleado;
+        await sre.obtenerEmpleadoByUsername(username, token);
 
     Future<List<Reporte>> reportes =
         obtenerReportesAjustador(empleado.idEmpleado, token);

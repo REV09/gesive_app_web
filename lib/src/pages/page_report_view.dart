@@ -14,14 +14,14 @@ class ReportViewPage extends StatefulWidget {
 }
 
 class _ReportViewPage extends State<ReportViewPage> {
-  String titlePage = "Reportar siniestro";
+  String titlePage = "Ver reporte de siniestro";
   ServicesRestEmpleado servicesRestEmpleado = ServicesRestEmpleado();
 
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
 
-    const String title = "Registrar siniestro";
+    const String title = "Ver reporte de siniestro";
     final TextStyle textLoginStyle =
         TextStyle(fontSize: responsive.dp(2), color: Colors.white);
 

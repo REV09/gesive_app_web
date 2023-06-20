@@ -110,7 +110,14 @@ class _PrincipalMain extends State<PrincipalMain> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, FormReportPage.routename);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FormReportPage(
+                    token: widget.token,
+                    username: widget.user,
+                  ),
+                ),
+              );
             },
             style: styleOptions,
             child: Text(

@@ -22,18 +22,18 @@ import '../classes/reporte_class.dart';
 import '../services/services_rest_policy.dart';
 import '../services/servicios_rest_conductor.dart';
 
-class ReportForm extends StatefulWidget {
+class ReportView extends StatefulWidget {
   String token;
   String username;
   Reporte reporte;
-  ReportForm({required this.token, required this.username, required this.reporte});
+  ReportView({required this.token, required this.username, required this.reporte});
 
 
   @override
-  _ReportFormState createState() => _ReportFormState();
+  _ReportViewState createState() => _ReportViewState();
 }
 
-class _ReportFormState extends State<ReportForm> {
+class _ReportViewState extends State<ReportView> {
   GlobalKey<FormState> _formKey = GlobalKey();
   final ServicesRestReporte _servicesRestReporte = ServicesRestReporte();
   String labelInputPolicy = "Póliza";
@@ -41,34 +41,31 @@ class _ReportFormState extends State<ReportForm> {
   String labelInputInvolvedVehicles = "Vehículos involucrados";
   String labelInputPhotos = "Fotos de siniestro";
   String labelInputDictamen = "Dictamen";
-  int fileQuantity = 0;
-  String labelSelectedPhotos = " archivo(s) seleccionado(s).";
-  int? _idPoliza;
-  String? _involucradosNombres;
-  String? _involucradosVehiculos;
   String? _dictamen;
+  DateTime? _dictamenFecha;
+  String? _dictamenHora;
+  String? _dictamenFolio;
   List<String> _fotos = List<String>.empty(growable: true);
-  double? _posLat;
-  double? _posLon;
+  Reporte? _reporte;
 
   _dictaminar() async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
-        var geoposition = await Geolocator.getCurrentPosition();
+        _reporte = widget.reporte;
         ProgressDialog.show(context);
         Reporte reporte = Reporte(
           idReporte: 100,
-          idPoliza: _idPoliza!,
-          posicionLat: geoposition.latitude,
-          posicionLon: geoposition.longitude,
-          involucradosNombres: _involucradosNombres!,
-          involucradosVehiculos: _involucradosVehiculos!,
-          fotos: "",
-          idAjustador: 420,
-          estatus: "pendiente",
-          dictamenTexto: "",
-          dictamenFecha: DateTime(1970, 01, 01),
+          idPoliza: _reporte!.idPoliza,
+          posicionLat: _reporte!.posicionLat,
+          posicionLon: _reporte!.posicionLon,
+          involucradosNombres: _reporte!.involucradosNombres,
+          involucradosVehiculos: _reporte!.involucradosVehiculos,
+          fotos: _reporte!.fotos,
+          idAjustador: 420, // Hay que buscar ajustador con username
+          estatus: "dictaminado",
+          dictamenTexto: _dictamen!,
+          dictamenFecha: DateTime.now(),
           dictamenHora: "",
           dictamenFolio: "",);
         int statusResponse =
@@ -78,23 +75,6 @@ class _ReportFormState extends State<ReportForm> {
         Navigator.pushNamed(context, HistoryReportsPage.routeName);
       }
     }
-  }
-
-  _abrirArchivos() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: true,
-        type: FileType.image);
-
-    if (result != null && result.files.isNotEmpty) {
-      _fotos = List<String>.empty(growable: true);
-      for(var file in result.files) {
-        _fotos.add(file.bytes.toString());
-      }
-    }
-
-    setState(() {
-      fileQuantity = _fotos.length;
-    });
   }
 
   @override
