@@ -4,7 +4,6 @@ import 'package:gesive_web_app/src/widgets/report_view.dart';
 import '../classes/reporte_class.dart';
 import '../services/services_rest_employee.dart';
 import '../utils/responsive.dart';
-import '../widgets/report_form.dart';
 
 class ReportViewPage extends StatefulWidget {
   String token;

@@ -1,27 +1,16 @@
-import 'dart:html';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:gesive_web_app/src/classes/conductor_clase.dart';
-import 'package:gesive_web_app/src/classes/vehiculo_class.dart';
 import 'package:gesive_web_app/src/pages/page_history_reports.dart';
-import 'package:gesive_web_app/src/services/services_rest_employee.dart';
 import 'package:gesive_web_app/src/services/services_rest_report.dart';
 import 'package:gesive_web_app/src/services/services_rest_policy.dart';
 import 'package:gesive_web_app/src/services/servicios_rest_conductor.dart';
-import 'package:gesive_web_app/src/services/services_rest_vehicle.dart';
 import 'package:gesive_web_app/src/utils/dialogs.dart';
-import 'package:gesive_web_app/src/utils/globals.dart';
 import 'package:gesive_web_app/src/utils/reg_exp.dart';
 import 'package:gesive_web_app/src/utils/responsive.dart';
 import 'package:gesive_web_app/src/widgets/input_text.dart';
 
-import '../classes/empleado_class.dart';
 import '../classes/poliza_class.dart';
 import '../classes/reporte_class.dart';
-import '../services/services_rest_policy.dart';
-import '../services/servicios_rest_conductor.dart';
 
 class ReportView extends StatefulWidget {
   String token;
