@@ -102,7 +102,7 @@ class _ReportViewState extends State<ReportView> {
             children: <Widget>[
               Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
               Text(labelInputPolicy, style: TextStyle(fontSize: responsive.hp(2.4), color: Colors.white),),
-              DropdownPolizas(username: widget.username, token: widget.token),
+              
               SizedBox(
                 height: responsive.hp(10),
               ),
@@ -118,7 +118,6 @@ class _ReportViewState extends State<ReportView> {
               SizedBox(
                 height: responsive.hp(2),
               ),
-              
               SizedBox(
                 height: responsive.hp(2),
               ),
@@ -161,62 +160,4 @@ class _ReportViewState extends State<ReportView> {
   }
 }
 
-class DropdownPolizas extends StatefulWidget {
-  String username;
-  String token;
-  DropdownPolizas({required this.username, required this.token});
 
-  @override
-  State<DropdownPolizas> createState() => _DropdownPolizasState();
-}
-
-class _DropdownPolizasState extends State<DropdownPolizas> {
-  int dropdownValue = 0;
-  Conductor? conductor;
-  List<Poliza> polizas = List<Poliza>.empty(growable: true);
-  Map<int ,String> vehiculos = <int, String>{};
-
-  @override
-  initState() {
-    super.initState();
-    obtenerDatos();
-  }
-
-  obtenerDatos() async {
-    ServiceRestConductor _servicesRestConductor = ServiceRestConductor();
-    ServicesRestPoliza _servicesRestPoliza = ServicesRestPoliza();
-    ServicesRestVehicle _servicesRestVehicle = ServicesRestVehicle();
-
-    conductor = await _servicesRestConductor.obtenerConductorByPhone(widget.username, widget.token);
-    polizas = await _servicesRestPoliza.obtenerPolizasUsuario(conductor!.getIdConductor());
-
-    for(Poliza poliza in polizas) {
-      Vehiculo vehiculo = await _servicesRestVehicle.obtenerVehiculo(poliza.idVehiculo, widget.token);
-      vehiculos[poliza.idPoliza] = "${vehiculo.getMarca()} ${vehiculo.getModelo()} ${vehiculo.getAnio()} ${vehiculo.getNumPlacas()}";
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Responsive responsive = Responsive(context);
-
-
-    return Theme(
-        data: Theme.of(context).copyWith(canvasColor: Colors.blueGrey),
-        child: DropdownButton(
-            isExpanded: true,
-            value: dropdownValue,
-            style: TextStyle(fontSize: responsive.hp(2.5), color: Colors.white),
-            items: polizas
-                .map((e) => DropdownMenuItem(value: e.idPoliza, child: Text(vehiculos[e.idPoliza] ?? "")))
-                .toList(),
-            onChanged: (int? value) {
-              setState(() {
-                dropdownValue = value!;
-              });
-            }
-        )
-    );
-  }
-
-}
