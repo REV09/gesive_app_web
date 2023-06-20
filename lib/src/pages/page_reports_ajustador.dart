@@ -53,7 +53,8 @@ class _ReportsAjustador extends State<ReportsAjustador> {
               ),
               Expanded(
                 child: FutureBuilder(
-                  future: servicesRestReporte.reportesAjustador(widget.username, widget.token),
+                  future: servicesRestReporte.reportesAjustador(
+                      widget.username, widget.token),
                   builder: ((context, snapshot) {
                     return ListView.builder(
                       itemCount: snapshot.data?.length,

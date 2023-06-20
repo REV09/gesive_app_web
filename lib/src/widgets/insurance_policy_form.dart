@@ -35,7 +35,7 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
       ServicesRestAuthentication();
   String labelInputPolicyTerm = "Plazo (Duración)";
   String labelInputCoverageType = "Tipo de cobertura";
-  String labelPurchaseCost= "Costo";
+  String labelPurchaseCost = "Costo";
   List<String> durationOptions = ['1 año', '2 años', '3 años'];
   Vehiculo? _vehiculoSeleccionado;
   int? _duracionSeleccionada;
@@ -56,20 +56,21 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
   void cargarListaVehiculos() async {
     try {
       Conductor conductor =
-            await _servicesRestAuthentication.validarTokenConductor(widget.token);
-      _listaVehiculos = await _servicesRestVehicle.obtenerListaVehiculos(widget.token);
+          await _servicesRestAuthentication.validarTokenConductor(widget.token);
+      _listaVehiculos =
+          await _servicesRestVehicle.obtenerListaVehiculos(widget.token);
     } catch (error) {
       print("Error al obtener la lista de vehículos: $error");
     }
   }
 
-  void _registrarPoliza() async {
+  Future<void> _registrarPoliza() async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
         ProgressDialog.show(context);
-        Conductor conductor =
-          await _servicesRestAuthentication.validarTokenConductor(widget.token);
+        Conductor conductor = await _servicesRestAuthentication
+            .validarTokenConductor(widget.token);
         Poliza poliza = Poliza(
           idPoliza: 0,
           idConductor: conductor.getIdConductor(),
@@ -79,7 +80,7 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
           plazo: _duracionSeleccionada!,
           tipoCobertura: _tipoCoberturaSeleccionada!,
           costo: _costo!,
-          );
+        );
         int statusResponse =
             await _serviceRestPolicy.registrarPoliza(poliza, widget.token);
         _verifyStatusRequest(statusResponse);
@@ -88,26 +89,26 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
     }
   }
 
-  void _registrarPago(int idPolizaObtenida) async {
+  Future<void> _registrarPago(int idPolizaObtenida) async {
     final isOk = _formKey.currentState?.validate();
     if (isOk != null) {
       if (isOk) {
         ProgressDialog.show(context);
-        Conductor conductor =
-          await _servicesRestAuthentication.validarTokenConductor(widget.token);
+        Conductor conductor = await _servicesRestAuthentication
+            .validarTokenConductor(widget.token);
         Pago pago = Pago(
           idPago: 0,
           idPoliza: idPolizaObtenida,
           idConductor: conductor.getIdConductor(),
           monto: _costo!,
-          fecha:  _FechaRegistro!,
+          fecha: _FechaRegistro!,
           formaDePago: _metodoPago!,
           numeroDeTarjeta: _numeroTarjeta!,
-          fechaVencimiento:_fechaVencimiento!,
+          fechaVencimiento: _fechaVencimiento!,
           cvv: _cvv!,
-          );
+        );
         int statusResponse =
-            await _serviceRestPay.registrarPago(pago,  widget.token);
+            await _serviceRestPay.registrarPago(pago, widget.token);
         _verifyStatusRequest(statusResponse);
       }
     }
@@ -151,9 +152,9 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
   }
 
   Future<void> _procesoPoliza() async {
-    _registrarPoliza();
-    int idPolizaCreada =
-          await _serviceRestPolicy.obtenerIdPolizaPorIdVehiculo(_vehiculoSeleccionado!.getIdVehiculo(), widget.token);
+    await _registrarPoliza();
+    int idPolizaCreada = await _serviceRestPolicy.obtenerIdPolizaPorIdVehiculo(
+        _vehiculoSeleccionado!.getIdVehiculo(), widget.token);
     _registrarPago(idPolizaCreada);
   }
 
@@ -166,21 +167,19 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
   @override
   Widget build(BuildContext context) {
     Responsive responsive = Responsive(context);
-  
+
     TextStyle purchaseButton = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: responsive.hp(2.4),
     );
 
-    
     TextStyle costLabel = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       fontSize: responsive.hp(2),
     );
 
-    
     ButtonStyle stylePurchaseButton = ElevatedButton.styleFrom(
       backgroundColor: Colors.teal.shade900,
       fixedSize: Size(
@@ -204,13 +203,13 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.green.shade100,
-                  borderRadius: BorderRadius.circular(10), // Ajusta el valor para cambiar el radio de los bordes
+                  borderRadius: BorderRadius.circular(
+                      10), // Ajusta el valor para cambiar el radio de los bordes
                 ),
-                  constraints: BoxConstraints(
+                constraints: BoxConstraints(
                   maxWidth: responsive.wp(65),
                   minWidth: responsive.wp(50),
                 ),
-                
                 child: Column(
                   children: [
                     DropdownButton<Vehiculo>(
@@ -219,16 +218,17 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                       items: _listaVehiculos.map((vehiculo) {
                         return DropdownMenuItem<Vehiculo>(
                           value: vehiculo,
-                          child: Text('${vehiculo.marca} ${vehiculo.modelo} (${vehiculo.numPlacas})'),
+                          child: Text(
+                              '${vehiculo.marca} ${vehiculo.modelo} (${vehiculo.numPlacas})'),
                         );
                       }).toList(),
                       onChanged: _editableFields
-                        ? (value) {
-                            setState(() {
-                              _vehiculoSeleccionado = value!;
-                            });
-                          }
-                        : null,
+                          ? (value) {
+                              setState(() {
+                                _vehiculoSeleccionado = value!;
+                              });
+                            }
+                          : null,
                     ),
                     SizedBox(
                       height: responsive.hp(3),
@@ -251,14 +251,14 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                         ),
                       ],
                       onChanged: _editableFields
-                        ? (value) {
-                            setState(() {
-                          _duracionSeleccionada = value!;
-                          _duracionDias = value * 365;
-                        });
-                          }
-                        : null,
-                        ),
+                          ? (value) {
+                              setState(() {
+                                _duracionSeleccionada = value!;
+                                _duracionDias = value * 365;
+                              });
+                            }
+                          : null,
+                    ),
                     SizedBox(
                       height: responsive.hp(3),
                     ),
@@ -280,12 +280,12 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                         ),
                       ],
                       onChanged: _editableFields
-                        ? (value) {
-                            setState(() {
-                              _tipoCoberturaSeleccionada = value!;
-                            });
-                          }
-                        : null,
+                          ? (value) {
+                              setState(() {
+                                _tipoCoberturaSeleccionada = value!;
+                              });
+                            }
+                          : null,
                     ),
                   ],
                 ),
@@ -298,27 +298,26 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.black26,
-                    borderRadius: BorderRadius.circular(10), 
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                    constraints: BoxConstraints(
+                  constraints: BoxConstraints(
                     maxWidth: responsive.wp(65),
                     minWidth: responsive.wp(50),
                   ),
-                  
-                  child:Column(
+                  child: Column(
                     children: [
                       Text(
-                          "Total a pagar: $_costo pesos mexicanos",
-                          textAlign: TextAlign.center,
-                          style: costLabel,
+                        "Total a pagar: $_costo pesos mexicanos",
+                        textAlign: TextAlign.center,
+                        style: costLabel,
                       ),
                       SizedBox(
                         height: responsive.hp(3),
                       ),
                       Text(
-                          "Fecha registrada para el pago: $_FechaRegistro",
-                          textAlign: TextAlign.center,
-                          style: costLabel,
+                        "Fecha registrada para el pago: $_FechaRegistro",
+                        textAlign: TextAlign.center,
+                        style: costLabel,
                       ),
                       SizedBox(
                         height: responsive.hp(3),
@@ -344,7 +343,6 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                               textAlign: TextAlign.center,
                               style: costLabel,
                             ),
-                            
                           ),
                         ],
                       ),
@@ -403,11 +401,11 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                           return null;
                         },
                       ),
-                       SizedBox(
+                      SizedBox(
                         height: responsive.hp(4),
                       ),
                       InputText(
-                        label: "CVV (Card Verification Value)" ,
+                        label: "CVV (Card Verification Value)",
                         fontSize: responsive.hp(2.5),
                         onChanged: (text) {
                           _fechaVencimiento = text;
@@ -431,16 +429,19 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                 visible: _showButton,
                 child: ElevatedButton(
                   onPressed: () {
-                      if(_vehiculoSeleccionado !=null && _duracionSeleccionada != null && _tipoCoberturaSeleccionada != null){
-                          _costo = calcularCosto();
-                          _FechaRegistro = DateTime.now();
-                          print(_FechaRegistro);
-                          print(_FechaRegistro!.add(Duration(days: _duracionDias!)));
-                          setState(() {
-                          _showAdditionalFields = !_showAdditionalFields;
-                          _showButton = false;
-                          _editableFields = !_editableFields;
-                          });
+                    if (_vehiculoSeleccionado != null &&
+                        _duracionSeleccionada != null &&
+                        _tipoCoberturaSeleccionada != null) {
+                      _costo = calcularCosto();
+                      _FechaRegistro = DateTime.now();
+                      print(_FechaRegistro);
+                      print(
+                          _FechaRegistro!.add(Duration(days: _duracionDias!)));
+                      setState(() {
+                        _showAdditionalFields = !_showAdditionalFields;
+                        _showButton = false;
+                        _editableFields = !_editableFields;
+                      });
                     }
                   },
                   style: stylePurchaseButton,
@@ -448,21 +449,22 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                     "Proceder al pago",
                     style: purchaseButton,
                   ),
-                ), 
+                ),
               ),
               Visibility(
                 visible: !_showButton,
                 child: ElevatedButton(
                   onPressed: () {
-                    if(_metodoPago != null){
+                    if (_metodoPago != null) {
                       final isOk = _formKey.currentState?.validate();
                       _procesoPoliza();
-                    }else{
+                    } else {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text("Formato de Pago Pendiente"),
-                          content: const Text("Recuerda seleccionar el tipo de tarjeta que utilizas"),
+                          content: const Text(
+                              "Recuerda seleccionar el tipo de tarjeta que utilizas"),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => {
@@ -480,7 +482,7 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
                     "Comprar Poliza",
                     style: purchaseButton,
                   ),
-                ), 
+                ),
               ),
               SizedBox(
                 height: responsive.hp(5),
@@ -491,7 +493,7 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
       ),
     );
   }
-  
+
   int? calcularCosto() {
     int total = 0;
     if (_tipoCoberturaSeleccionada == 'Básica') {
@@ -519,7 +521,6 @@ class _InsurancePolicyFormState extends State<InsurancePolicyForm> {
         total = 5000;
       }
     }
-     return total;
+    return total;
   }
-  
 }

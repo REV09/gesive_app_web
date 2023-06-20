@@ -62,7 +62,7 @@ class ServicesRestPoliza {
 
   Future<int> obtenerIdPolizaPorIdVehiculo(int id, String token) async {
     final respuesta = await _dio.get(
-      "${urlApi}polizas/idPoliza?idVehiculo=$id",
+      "${urlApi}polizas/idPoliza?id_vehiculo=$id",
       options: Options(
         headers: {
           'Content-type': 'application/json',
@@ -129,8 +129,8 @@ class ServicesRestPoliza {
           "idpoliza": poliza.getIdPoliza(),
           "idConductor": poliza.getIdConductor(),
           "idVehiculo": poliza.getIdVehiculo(),
-          "fechaInicio": poliza.getFechaInicio(),
-          "fechaFin": poliza.getFechaFin(),
+          "fechaInicio": poliza.getFechaInicio().toString(),
+          "fechaFin": poliza.getFechaFin().toString(),
           "plazo": poliza.getPlazo(),
           "tipoCobertura": poliza.getTipoCobertura(),
           "costo": poliza.getCosto()
